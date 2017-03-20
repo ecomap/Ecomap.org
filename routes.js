@@ -645,7 +645,7 @@ exports.postProblem = function(req,res){  //post new problem
                                 i++;
                             }
                         });
-                        notify(req, res);
+                        // notify(req, res);
                         res.send({
                             json:   rows,
                             length: rows.length
@@ -707,55 +707,55 @@ exports.push = function(req,res){ // get all moderated problems in brief (id, ti
    notify(req, res);
 };
 
-function notify(req, res) {
-    console.log("start pushing");
-    var apn = require('apn');
-    var options = { 
-        passphrase: "ecomaprulezz"
-    };
-
-    var apnConnection = new apn.Connection(options);
-    //var myDevice = new apn.Device('d050209aac6161ed5ee7ec9b32698a402744d38ed2ed064283ed6bfe64bd3072');
-    //var note = new apn.Notification();
-    
-    //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-    //note.badge = 3;
-    //note.sound = "ping.aiff";
-    //note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
-    // note.payload = {'content-available': 1};
-
-    // apnConnection.pushNotification(note, myDevice);
-    req.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM DeviceTokens ', function (err, rows) {
-                    if (err) {
-                        res.statusCode = 500;
-                        res.send({
-                            err: err.code
-                        });
-                        console.error('Can`t make query in getNews' + '\n' + err +"\n");
-                    }
-                    function logArrayElements(element, index, array) {
-                      //console.log('a[' + index + '] = ' + element['token']);
-                        var myDevice = new apn.Device(element['token']);
-
-                        var note = new apn.Notification();
-    
-                        note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-                        note.badge = 3;
-                        note.sound = "ping.aiff";
-                        note.alert = "\uD83D\uDCE7 \u2709 You have a new message " + index;
-                        note.payload = {'content-available': 1};
-
-                        apnConnection.pushNotification(note, myDevice);
-                        
-                    }
-                    rows.forEach(logArrayElements);
-
-                    console.log("end getNews API function");
-                });
-    });
-    console.log("yey");
-}
+// function notify(req, res) {
+//     console.log("start pushing");
+//     var apn = require('apn');
+//     var options = {
+//         passphrase: "ecomaprulezz"
+//     };
+//
+//     var apnConnection = new apn.Connection(options);
+//     //var myDevice = new apn.Device('d050209aac6161ed5ee7ec9b32698a402744d38ed2ed064283ed6bfe64bd3072');
+//     //var note = new apn.Notification();
+//
+//     //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+//     //note.badge = 3;
+//     //note.sound = "ping.aiff";
+//     //note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+//     // note.payload = {'content-available': 1};
+//
+//     // apnConnection.pushNotification(note, myDevice);
+//     req.getConnection(function (err, connection) {
+//     connection.query('SELECT * FROM DeviceTokens ', function (err, rows) {
+//                     if (err) {
+//                         res.statusCode = 500;
+//                         res.send({
+//                             err: err.code
+//                         });
+//                         console.error('Can`t make query in getNews' + '\n' + err +"\n");
+//                     }
+//                     function logArrayElements(element, index, array) {
+//                       //console.log('a[' + index + '] = ' + element['token']);
+//                         var myDevice = new apn.Device(element['token']);
+//
+//                         var note = new apn.Notification();
+//
+//                         note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+//                         note.badge = 3;
+//                         note.sound = "ping.aiff";
+//                         note.alert = "\uD83D\uDCE7 \u2709 You have a new message " + index;
+//                         note.payload = {'content-available': 1};
+//
+//                         apnConnection.pushNotification(note, myDevice);
+//
+//                     }
+//                     rows.forEach(logArrayElements);
+//
+//                     console.log("end getNews API function");
+//                 });
+//     });
+//     console.log("yey");
+// }
 exports.postNews = function(req,res) {
     console.log("start postNews  API function");
     req.getConnection(function (err, connection) {
