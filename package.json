@@ -1,0 +1,30 @@
+{
+  "name": "enviromap-rest-api",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "body-parser": "*",
+    "compression": "^1.2.0",
+    "cookie-parser": "*",
+    "express": "*",
+    "express-myconnection": "*",
+    "jade": "*",
+    "jsonwebtoken": "*",
+    "mailchimp-api": "*",
+    "mandrill-api": "*",
+    "multer": "0.1.6",
+    "mysql": "~2.4.3",
+    "password-generator": "*",
+    "ws": "^0.7.1",
+    "xmlhttprequest": "*",
+    "apn": "*",
+    "crypto": "*",
+    "socket.io": "*"
+  },
+  "devDependencies": {
+    "bower": "*"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}

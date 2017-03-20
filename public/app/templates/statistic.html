@@ -1,0 +1,50 @@
+<close-button></close-button>
+<div class="statistic">
+<div class="topProblems">
+      <div class="col-md-4"> <h2>ТОП 10 популярних проблем</h2><br>
+        <ul class="topItem">
+          <a ng-repeat="popular in mostPopular" ng-href="/#/problem/showProblem/{{popular.Id}}"><li>{{$index+1}}. {{popular.Title}}<p><i class="fa fa-fw"></i>{{popular.Votes}}</p></li></a>
+        </ul>
+        </div>
+        <div class="col-md-4"> <h2>ТОП 10 важливих проблем</h2><br>
+        <ul class="topItem">
+          <a ng-repeat="important in mostImportant" ng-href="/#/problem/showProblem/{{important.Id}}"><li>{{$index+1}}. {{important.Title}}<p><i class="fa fa-star"><span class="sr-only">(*)</span></i> {{important.Severity}}</p></li></a>
+        </ul>
+        </div>
+        <div class="col-md-4"> <h2>ТОП 10 обговорюваних проблем</h2><br>
+        <ul class="topItem">
+          <a ng-repeat="comment in mostComment" ng-href="/#/problem/showProblem/{{comment.Id}}"><li>{{$index+1}}. {{comment.Title}}<p><i class="fa fa-pencil"></i> {{comment.value}}</p></li></a>
+        </ul>
+        </div>
+</div>
+<h2>Статистика за весь час</h2>
+<ul class="mainStats">
+  <li><span>{{problems}}</span><br>Проблем</li>
+  <li><span>{{votes}}</span><br>Голосів</li>
+  <li><span>{{comments}}</span><br>Коментарів</li>
+  <li><span>{{photos}}</span><br>Фотографій</li>
+</ul>
+    <h2 class="light">Кількість доданих проблем за останній <span class="periodItem" ng-class="style.D" ng-click="pie('D')">день</span> | 
+        <span class="periodItem" ng-class="style.W" ng-click="pie('W')">тиждень</span>  |
+        <span class="periodItem" ng-class="style.M" ng-click="pie('M')">місяць</span>  |
+        <span class="periodItem" ng-class="style.Y" ng-click="pie('Y')">рік</span><br>
+        <span class="periodItem" ng-class="style.A" ng-click="pie('A')">за весь час</span><br>
+        </h2>
+    <div class="pie">    
+        <svg id="el2" ng-init="pie('A')"></svg>
+        
+    </div>
+  
+    
+<ul class="legend" ng-init="color = ['#095B0F', '#231F20', '#98442B', '#1B9AD6', '#71BF44', '#FFAB09', '#50095B']">
+  <li ng-repeat="types in problemTypes">
+  <svg width="12" height="12"><rect width="12" height="12" style="fill:{{color[$index]}}"/></svg> - {{types.name}}
+   </li>
+</ul>
+<h2>Хронологія публікацій та голосів</h2>
+<ul class="legend">
+  <li><svg width="5" height="15"><rect width="5" height="15" style="fill:#f00; opacity: 0.5"/></svg> - Додано проблему</li>
+  <li><svg width="5" height="15"><rect width="5" height="15" style="fill:#00f; opacity: 0.5"/></svg> - Додано голос</li>
+</ul>
+<svg id="el1" ng-init="chart()"></svg>
+</div>

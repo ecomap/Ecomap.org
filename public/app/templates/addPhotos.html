@@ -1,0 +1,18 @@
+<form id="my-awesome-dropzone" drop="dropzoneConfig" class="dropzone">
+    <div class="previews">
+    	<span><strong>Клікніть</strong> або перенесіть фото, щоб завантажити</span>
+    </div>
+    <div style="font-size: 0.8em;">Ще можна додати <b>{{fileCountLeft}}</b> фото, загальним розміром <b>{{fileSizeLeft}} МБ</b></div>
+
+    <button id="btn-submit" class="btn btn-success btn-sm" ng-disabled="requiredData()">Опублікувати</button>
+    <input type="hidden" name="title" ng-value="problemData.title">
+    <input type="hidden" name="content" ng-value="problemData.content">
+    <input type="hidden" name="proposal" ng-value="problemData.proposal">
+    <input type="hidden" name="latitude" ng-value="problemData.latitude">
+    <input type="hidden" name="longitude" ng-value="problemData.longtitude">
+    <input type="hidden" name="type" ng-value="problemData.type">
+    <input type="text" style="display: none" ng-model="userId" name="userId"/>
+    <input type="text" style="display: none" ng-model="name" name="userName"/>
+    <input type="text" style="display: none" ng-model="surname" name="userSurname"/>
+
+</form>

@@ -1,0 +1,12 @@
+<div class="b-addProblem" name="submit_problem">
+	<a href="" ng-click="swipeHide()" class="close">×</a>
+	<h2 class="b-addProblem-header">Додати проблему</h2>
+	<tabset justified="true" ng-model="tabs">
+	    <tab ng-repeat="tab in tabs" active="tab.active">
+	    	<tab-heading ng-click="getWindowDimensions()"><i class={{tab.icon}}></i> {{tab.heading}}</tab-heading>
+	    	<div ng-if="tab.active">
+	    		<div ng-include="tab.content"></div>
+	    	</div>
+		</tab>
+	</tabset>
+</div>

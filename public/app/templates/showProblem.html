@@ -1,0 +1,109 @@
+<div  class="b-right-side__show-problem">
+    <a href="" ng-click="swipeHide()" class="close">×</a>
+    <div class="b-problems" >
+        <div class="b-problem-deatiled-info-title">
+            <a ng-click="map.panToOffset(problem.Coordinates, 0, 0, 600, 0)" href=""><img ng-src="{{path}}" class="b-problem-deatiled-info-title__icon"></a>
+            <div  class="b-problem-deatiled-info-title__text b-problem-notAdmin_{{!isAdministrator()}}">
+                <editproblemtitle  value="problem.Title"></editproblemtitle>
+            </div>
+
+            <div class="b-problem-deatiled-info-user">
+                <div class="b-problem-deatiled-info-user__name">
+                    {{problem.userName}}
+                </div>
+                <div class="b-problem-deatiled-info-user__date">
+                    {{problem.CreatedDate | date:'dd/MM/yyyy HH:MM'}}
+                </div>
+            </div>
+        </div>
+        <div class="b-problem-deatiled-info-general">
+            <div class=" b-label-overRating" ng-class="{'label-default': value<2,'label-info':value>=2&&value<3, 'label-warning': value>=3 && value<4, 'label-danger': value>=4}" ng-show="showStatus">{{severityMessage}}</div>
+            <div class="b-problem-deatiled-info-container">
+                <div class='b-problem-deatiled-info-severity'>
+                    <div  ng-class="{'b-hide-stars':!isAdministrator()}" ng-mouseover=showMessageOverRating(problem.Severity) ng-mouseleave="hideSeverityLabel()"> </div>
+                    <div class="b-problem-deatiled-info__severity b-problem-notAdmin_{{!isAdministrator()}}" ng-init="problem.Severity"><rating ng-model="problem.Severity" on-hover="showMessageOverRating(value)" on-leave="showStatus = false" readonly="isReadonly" state-on="'fa-star'" state-off="'fa-star-o'" ></rating>
+                    </div>
+                </div>
+                <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                <div class="b-problem-deatiled-info-status__text" >
+                    <div class="onoffswitch">
+                        <input type="checkbox"   name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="checkedbox"   ng-checked="checkedbox" ng-disabled="!isAdministrator()" >
+                        <label class="onoffswitch-label onoffswitch-label-notAdmin_{{!isAdministrator()}}" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="b-problem-deatiled-info-votes">
+                    <button class="simple_like_img"  ng-init="myvalue = false" ng-mousemove="myvalue= true" ng-mouseleave="myvalue= false" ng-click="addOneVote()" ng-disabled="disableVoteButton">
+                        <div class="b-hintVote" ng-class="{' label-success': myvalue}" ng-hide="!myvalue||disableVoteButton" >Голосувати</div>
+                        <span ><i class="fa fa-fw" ng-class="{'simple_like_img-disable':disableVoteButton}"></i></span>
+                    </button>
+                    {{problem.Votes}}
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <tabset justified="true" class="b-problem-tab">
+            <tab heading="Детально" class="b-problem-notAdmin_false" >
+                <div class="b-problem-deatiled-info-description">
+                    <div class="b-problem-deatiled-info-description__title"></div>
+                    <div class="b-problem-deatiled-info-description__content b-problem-notAdmin_{{!isAdministrator()}}">
+                        <label>Опис проблеми:</label><br>
+                        <editproblemcontent  value="problem.Content" ></editproblemcontent>
+                    </div>
+                    <div class="b-problem-deatiled-info-description__content b-problem-notAdmin_{{!isAdministrator()}}">
+                        <label>Пропозиції щодо вирішення:</label><br>
+                        <editproblemcontent  value="problem.Proposal" ></editproblemcontent>
+                    </div>
+                    <div class="b-problem-deatiled-info-description-photos">
+
+                        <div class="show_photo" ng-repeat="photo in photos">
+                            <img ng-click="showSliderFunc()" ng-src="photos/large/{{photo.Link}}" class="b-details-body-problem-photo"/>
+
+                            <i class="fa fa-check show_photo_label_{{photo.Status}}"></i>
+                            <i ng-if="isAdministrator()" class="fa fa-close show_photo_delete_lavel_{{isAdministrator()}}" ng-click="deletePhoto($index)"></i>
+                        </div>
+
+                        <div class="dropFieldForShowProblem" style="width: 100px"><div ng-if="isLoggedIn()" class="b-details-body-problem-photo_add" ng-click="showDrop()" ng-show="showAddPhotoButton">+ Додати фото</div></div>
+                        <div ng-if="!isLoggedIn()" style="margin-top: 10px;"><a class="tn-join-us" style="cursor: pointer;" ng-click="showRegForm('')">Зареєструйтесь</a> щоб додати фото</div>
+
+                        <form  id="addPhotoDropzone" class="dropzone b-add-problem-form" name="upload_photo" drop="dropzoneConfig" ng-show="showDropField">
+                            <input type="text" style="display: none" ng-model="userId" name="userId"/>
+                            <input type="text" style="display: none" ng-model="name" name="userName"/>
+                            <input type="text" style="display: none" ng-model="surname" name="userSurname"/>
+
+                            <div  class="previews previews_show" >
+                                <p>
+                                    <span class="b-conteiner__drop-title-1"><strong>+ Перемістить сюди фото або натисніть </strong></span>
+                                </p>
+
+                            </div>
+                            <div style="font-size: 0.8em;">Ще можна додати <b>{{fileCountLeft}}</b> фото, загальним розміром <b>{{fileSizeLeft}} МБ</b></div>
+                            <div class="b-details-body__status">
+                                <label style="cursor: pointer"><input style="cursor: pointer;margin-top: 2px;" type="checkbox" name="solveProblemMark" > Проблема вже вирішена?</label>
+
+                            </div>
+                            <input id="btn-submit" type="button" class="b-add-problem-button btn-forward-step-3 b-public" value="Додати">
+                            <input id="btn-reload" type="button" ng-click="hideAddPhotoForm()" class="b-add-problem-button btn-forward-step-3 b-public" value="Звернути">
+                        </form>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="Коментарі" class="b-problem-notAdmin_false">
+                <activity></activity>
+            </tab>
+        </tabset>
+        <div class="b-commandButtons-group">
+            <button type="button" class="btn btn-sm {{editStatusClass}}"  ng-click="saveChangestoDb(problem.Title,problem.Severity, problem.Status, problem.Content,problem.Proposal)" >Збережіть зміни</button>
+            <button type="button" class="btn {{addStatus}} btn-sm" ng-click="addProblemToDB()" >Додати проблему до бази</button>
+            <button type="button" class="btn {{delStatus}} btn-sm"  ng-click="deleteProblemFromDb()" >Видалити проблему з бази</button>
+        </div>
+
+
+
+    </div>
+</div>
