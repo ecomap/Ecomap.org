@@ -7,7 +7,6 @@ var mysql = require('mysql'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     myConnection = require('express-myconnection'),
-    bodyParser = require('body-parser'),
     http = require('http'),
     app = express(),
     server = http.createServer(app),
@@ -205,6 +204,7 @@ app.post('/api/problempost', routes.postProblem);
 app.post('/api/vote', routes.postVote);
 app.get('/api/getTitles',routes.getTitles);
 app.get('/api/resources/:name',routes.getResource);
+
 //new api for adding new photos to existed problem
 app.post('/api/registerToken', routes.registerToken);
 app.post('/api/photo/:id',routes.addNewPhotos);
@@ -214,6 +214,7 @@ app.get('/api/logout', routes.logOut);
 app.post('/api/register', routes.register);
 app.post('/api/changePassword', routes.changePassword);
 //app.post('/api/resetPassword', routes.resetPassword);
+
 //admin
 app.get('/api/not_approved', routes.notApprovedProblems);
 app.delete('/api/problem/:id', routes.deleteProblem);
@@ -225,6 +226,7 @@ app.post('/api/addResource', routes.addResource);
 app.put('/api/editResource/:id', routes.editResource);
 app.delete('/api/deleteResource/:id', routes.deleteResource);
 app.post('/api/approve/:id', routes.approveProblem);
+
 //admin - newsline Api
 app.post('/api/postNews',routes.postNews);
 app.get('/api/getNews',routes.getNews);
