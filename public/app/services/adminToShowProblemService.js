@@ -2,7 +2,7 @@ define(['./module'],function(services) {
     'use strict';
 
 
-    services.factory('adminToShowProblemService', function($http, $modal, $rootScope) {
+    services.factory('adminToShowProblemService', function($http, $uibModal, $rootScope) {
         var notApproved = undefined;
         var notApprovedProblemListQty = 0;
         var adminMode = false;
@@ -24,7 +24,7 @@ define(['./module'],function(services) {
         return {
             getNotApprovedProblem:function(getNotApproved){
                 $http({ method: 'GET', url: '/api/not_approved' })
-                    .success (function (data) {
+                    .then(function onSuccess (data) {
                         notApproved = data;
                         adminMode = true;
                         notApprovedProblemListQty = notApproved?notApproved.length:0;
@@ -34,7 +34,7 @@ define(['./module'],function(services) {
 
             deleteNotApprovedProblemDB:function(problem){
                 return $http({ method: 'DELETE', url: '/api/problem/'+problem.Id })
-                    .success (function (data) {
+                    .then(function onSuccess (data) {
                     });
             },
 

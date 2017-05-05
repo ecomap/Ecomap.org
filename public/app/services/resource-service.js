@@ -10,25 +10,26 @@ define(['./module'], function (services) {
      */
 
     services.factory('ResourceService', function ($http, ipCookie) {
-        return{
-            getResourceFromDb:function(Alias){
+        return {
+            getResourceFromDb: function (Alias) {
                 return $http.get('api/resources/' + Alias);
 
             },
-            editResourceAndSaveToDb:function(Id,data){
-                return $http.put('api/editResource/' + Id,data);
+            editResourceAndSaveToDb: function (Id, data) {
+                return $http.put('api/editResource/' + Id, data);
             },
-            addResourceToDb:function(data){
+            addResourceToDb: function (data) {
                 return $http.post('api/addResource', data);
             },
-            getTitlesFromDb:function() {
-                return $http({ method: 'GET', url: 'api/getTitles' })
+            getTitlesFromDb: function () {
+                return $http({
+                    method: 'GET',
+                    url: 'api/getTitles'
+                });
             },
-            deleteResource:function(id){
+            deleteResource: function (id) {
                 return $http.delete('/api/deleteResource/' + id);
             }
-
-
 
 
         }

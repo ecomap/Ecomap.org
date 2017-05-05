@@ -1,6 +1,6 @@
 define(['./module'], function(controllers){
     'use strict';
-    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$modal','adminToShowProblemService','$window','UserService','ActivityService','$route', function ($scope,$routeParams,ProblemService,ipCookie,$rootScope,$modal,adminToShowProblemService,$window, UserService,ActivityService,$route){
+    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$uibModal','adminToShowProblemService','$window','UserService','ActivityService','$route', function ($scope,$routeParams,ProblemService,ipCookie,$rootScope,$uibModal,adminToShowProblemService,$window, UserService,ActivityService,$route){
         $scope.isAdministrator = UserService.isAdministrator;
 
         if($scope.uploadRightSide){
@@ -40,7 +40,8 @@ define(['./module'], function(controllers){
         var problemModerationStatus;
         var tempContent = '';
         //get problem info
-        ProblemService.getProblemByIdFromDb($routeParams.problemID).success(function (data) {
+        ProblemService.getProblemByIdFromDb($routeParams.problemID)
+            .then(function onSuccess (data) {
             if(data.error) {
                 $rootScope.$broadcast('Update',"_hide");
                 window.location.href="#/map";
@@ -117,8 +118,7 @@ define(['./module'], function(controllers){
                     }
                 });
             }
-        })
-            .error(function (data, status, headers, config) {
+        },function onError (data, status, headers, config) {
                 throw error;
             });
 
@@ -169,7 +169,7 @@ define(['./module'], function(controllers){
         };
         $scope.deletePhoto = function(index){
             ProblemService.deletePhotoFromdb($scope.photos[index].Link)
-                .success(function (data, status, headers, config) {
+                .then(function onSuccess (data, status, headers, config) {
                     var tempArray=[];
                    for(var i =0;i<$scope.photos.length;i++)
                    {
@@ -180,8 +180,7 @@ define(['./module'], function(controllers){
                    }
                     $scope.photos = tempArray;
                     console.log($scope.photos);
-                })
-                .error(function (data, status, headers, config) {
+                },function onError (data, status, headers, config) {
                     throw error;
                 });
         }

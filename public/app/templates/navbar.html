@@ -18,18 +18,17 @@
 
     <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-init="getTitles()">
       <ul class="nav navbar-nav">
-        
         <li ng-repeat="title in data" ng-if="!title.IsResource" class="b-menu__button">
             <a id="link" href="#/resources/{{title.Alias}}">{{title.Title}} </a>
             <i class="fa fa-pencil fa-xs " ng-if="isAdministrator()" ng-click="editResource(title.Alias)"></i>
             <i class="fa fa-trash fa-xs" ng-if="isAdministrator()" ng-click="deleteResource(title.Id)"></i>
         </li>
 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle b-menu__button">Ресурси 
+        <li uib-dropdown>
+          <a uib-dropdown-toggle class="b-menu__button" href="#">Ресурси
             <span class="fa fa-caret-down"></span>
           </a>
-          <ul class="dropdown-menu" id="b-header__resources">
+          <ul uib-dropdown-menu id="b-header__resources" >
             <li ng-repeat="title in data" ng-if="title.IsResource">
               <a id="link" href="#/resources/{{title.Alias}}">{{title.Title}}</a>
               <i class="fa fa-pencil" ng-if="isAdministrator()" ng-click="editResource(title.Alias)"></i>
@@ -41,11 +40,11 @@
           </ul>
         </li>
         <li class="b-menu__button"> <a ng-href="#/statistic"><i class="fa fa-pie-chart"></i> Статистика</a></li>
-        <li class="dropdown" ng-hide="isLoggedIn()">
-          <a class="dropdown-toggle b-menu__button" href="#">Вхід 
+        <li uib-dropdown ng-hide="isLoggedIn()">
+          <a uib-dropdown-toggle class="b-menu__button" href="#">Вхід
             <span class="fa fa-caret-down"></span>
           </a>
-          <ul class="dropdown-menu" id="b-header__login-menu" stop-event="click">
+          <ul uib-dropdown-menu id="b-header__login-menu" stop-event="click">
             <li>
               <form name="login">
                 <div class="form-group">
@@ -76,11 +75,11 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
-        <li class="dropdown">
-          <a class="dropdown-toggle b-menu__button"><i class="fa fa-user"></i> {{name}} {{surname}} 
+        <li uib-dropdown>
+          <a uib-dropdown-toggle class="b-menu__button"><i class="fa fa-user"></i> {{name}} {{surname}}
             <span class="fa fa-caret-down"></span>
           </a>
-          <ul class="dropdown-menu">
+          <ul uib-dropdown-menu>
             <li><a class="b-menu__button" ng-click="changePassword()" href="/"><i class="fa fa-wrench"></i> Змінити пароль</a></li>
             <li><a class="b-menu__button" ng-click="logOut()" href="/"><i class="fa fa-sign-out"></i> Вийти</a></li>
           </ul>

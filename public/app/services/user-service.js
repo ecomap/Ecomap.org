@@ -1,4 +1,4 @@
-define(['./module'], function (services) {
+    define(['./module'], function (services) {
     'use strict';
 
         

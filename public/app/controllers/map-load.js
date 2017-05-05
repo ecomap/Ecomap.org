@@ -42,11 +42,10 @@ define(['./module'], function (controllers) {
 
         $rootScope.getProblemsAndPlaceMarkers = function(){
             ProblemService.getAllProblemsFromDb()
-                .success(function (data) {
+                .then(function onSuccess (data) {
                     $scope.data = data;
                     placeMarkers($scope.data);
-                })
-                .error(function (data, status, headers, config) {
+                },function onError(data, status, headers, config) {
                     throw error;
                 });
         };

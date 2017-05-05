@@ -1,7 +1,7 @@
 define(['./module'],function(controllers){
     'use strict';
 
-    controllers.controller('mainCtrl',['$scope','$rootScope','$modal', '$log','UserService', '$location','ResourceService', 'adminToShowProblemService' ,function($scope,$rootScope,$modal, $log,UserService,$location,ResourceService, adminToShowProblemService){
+    controllers.controller('mainCtrl',['$scope','$rootScope','$uibModal', '$log','UserService', '$location','ResourceService', 'adminToShowProblemService' ,function($scope,$rootScope,$uibModal, $log,UserService,$location,ResourceService, adminToShowProblemService){
          $scope.showSlider=false;
         $scope.uploadRightSide = false;
 
@@ -35,8 +35,11 @@ define(['./module'],function(controllers){
        // $scope.showRigthSide = "_hide";
         $rootScope.getTitles = function() {
             ResourceService.getTitlesFromDb()
-            .success(function (data) {
-                $rootScope.data = data;
+            .then(function onSuccess(res) {
+                $rootScope.data = res.data;
+                console.log(res.data);
+            }, function onError(err) {
+                console.log(err.err)
             });
                     $scope.deleteResource = function(Id,Title){
         //modal window
@@ -46,7 +49,7 @@ define(['./module'],function(controllers){
                 adminToShowProblemService.showModalMessage(text, 'sm',approveCaption, cancelCaption).then(
                     function () {
                     ResourceService.deleteResource(Id)
-                           .success(function() {
+                           .then(function onSuccess() {
                     $rootScope.getTitles();
                     });
                     },

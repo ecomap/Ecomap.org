@@ -279,8 +279,11 @@ exports.getTitles = function(req,res){ //get titles of resources
                         });
                         console.error('Can`t make query\n', err);
                     }else{
-                        if (rows.length == 0) {
+                        if (rows.length === 0) {
                             res.statusCode = 404;
+                            res.send({
+                                err:""
+                            });
                             console.log("Title, Alias, Id, IsResource are empty");
                         }else{
                             res.statusCode = 200;

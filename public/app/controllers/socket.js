@@ -5,37 +5,42 @@ define(['./module'],function(controllers){
         $rootScope.$broadcast('Update',"_problem");
         $rootScope.$emit('showSlider','false');
         $scope.deleteItem="clear";
-        $scope.message="";
+        // $scope.message="";
         $scope.currentItemNews=-1;
         $scope.messageLogHide="_hide";
         $scope.nickName = $scope.name;
         var i = 0;
-        $scope.messageLogs = [];
+        $scope.message = {
+            text: "",
+            logs : []
+        };
 
         SocketService.getNewsFromDb(updateScopeAfterGettingNews);
         function updateScopeAfterGettingNews(data){
-            $scope.messageLogs=data.news;
-            for(var i=0;i<$scope.messageLogs.length;i++){
-                $scope.messageLogs[i].show="none";
+            $scope.message.logs=data.news;
+            for(var i=0;i<$scope.message.logs.length;i++){
+                $scope.message.logs[i].show="none";
             }
-            if($scope.messageLogs[0]){$scope.showNewsContainer=false;}
+            if($scope.message.logs[0]){$scope.showNewsContainer=false;}
 
         }
 
-        $scope.sendMessage = function(message) {
-            console.log(message);
-            console.log($scope.message);
-            if($scope.message==""&& message<0||  message==$scope.message&& !isNaN(message)|| $scope.message==undefined && message<0) {
-                alert("Повідомлення не може состояти ліше із ціфр або бути пустим!");
+        $scope.sendMessage = function(messageValue) {
+            console.log(messageValue);
+            console.log($scope.message.text);
+            if($scope.message.text === "" && messageValue < 0||
+                messageValue === $scope.message.text && !isNaN(messageValue)||
+                $scope.message.text === undefined && messageValue < 0) {
+                alert("Повідомлення не може состояти лише із ціфр або бути пустим!");
                 $scope.placeHolder = "Напишіть тут текст повідомлення...";
             }
             else{
-                $log.debug('sending message', message);
-                SocketService.socket.emit('message', ipCookie('token'), message);
-                if (isNaN(message)) {
-                    SocketService.addNewsToDb(message);
+                $log.debug('sending message', messageValue);
+                SocketService.socket.emit('message', ipCookie('token'), messageValue);
+                if (isNaN(messageValue)) {
+                    SocketService.addNewsToDb(messageValue);
                 }
-                $scope.message = '';
+                $scope.message.text = "";
             }
         };
         $scope.$on('socket:broadcast', function(event, data) {
@@ -46,18 +51,19 @@ define(['./module'],function(controllers){
             }
             $scope.$apply(function() {
                 var news={};
-                $scope.message = '';
+                $scope.message.text = "";
                 if(!isNaN(data.payload)){
-                    SocketService.deleteOneNewsItem($scope.messageLogs[data.payload-1].Content).then(function(){
-                        $scope.messageLogs.splice(data.payload - 1, 1);
+                    SocketService.deleteOneNewsItem($scope.message.logs[data.payload-1].Content)
+                        .then(function(){
+                        $scope.message.logs.splice(data.payload - 1, 1);
                     });
 
                 }else {
-                      if(data.payload.trigger!=true) {
+                      if(data.payload.trigger !== true) {
                         news.show = "none";
                         news.Content = data.payload;
 
-                        $scope.messageLogs.push(news);
+                        $scope.message.logs.push(news);
 
                     }
                 }

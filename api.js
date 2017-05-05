@@ -27,8 +27,8 @@ app.set('view engine', 'ejs');
 var connectionPool = {
     host     : 'localhost',
     user     : 'root',
-    password : 'root',
-    database : 'enviromap'
+    password : '1',
+    database : 'Enviromap'
 };
 
  var router = express.Router();

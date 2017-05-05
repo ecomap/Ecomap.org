@@ -1,6 +1,7 @@
 define(['./module'],function(controllers){
 	'use strict';
 	controllers.controller('datePicker',['$scope','$rootScope','todayTime','$locale', function ($scope,$rootScope, todayTime, $locale){
+
 		$scope.todayTime = todayTime;
 
 		$scope.clear = function () {
@@ -12,31 +13,34 @@ define(['./module'],function(controllers){
 		};
 		$scope.toggleMin();
 
-		$scope.open = function($event, which) {
+		$scope.toggleDt = function($event, which) {
 			$event.preventDefault();
 			$event.stopPropagation();
-			$scope.datepickers[which]= true;
+			$scope.datepickers[which]= !$scope.datepickers[which];
+			which === "dt"? $scope.datepickers['dtSecond'] = false :
+                $scope.datepickers['dt'] = false;
 		};
 
 		$scope.formDataToday = new Date();
 
 		$scope.dateOptions = {
-			formatYear: 'yy',
-			startingDay: 1,
-			showWeeks: 'false',
-			formatMonth: 'MMM'
+            formatMonth: 'MMM',
+            formatYear: 'yy',
+            showWeeks: false,
+			startingDay: 1
 		};
 
 		$scope.datepickers = {
 	        dt: false,
 	        dtSecond: false
-	    }
+	    };
+
+		$scope.text = {
+            close: 'Закрити',
+            clear: 'Очистити',
+            today: 'Сьогодні'
+        };
 
 		$scope.format = 'dd MMM yyyy';
-		$scope.texts = {
-			close: 'Закрити',
-			clear: 'Очистити',
-			today: 'Сьогодні'
-		}
 	}]);
 });

@@ -2,7 +2,7 @@ define(['./module'], function (controllers) {
 
     'use strict';
 
-    controllers.controller('AdminUserCtrl', ['$scope', '$rootScope', 'ProblemService', '$location', '$window', 'ipCookie', 'UserService', '$modal', '$log', function ($scope,$rootScope, ProblemService, $location, $window, ipCookie, UserService, $modal, $log) {
+    controllers.controller('AdminUserCtrl', ['$scope', '$rootScope', 'ProblemService', '$location', '$window', 'ipCookie', 'UserService', '$uibModal', '$log', function ($scope,$rootScope, ProblemService, $location, $window, ipCookie, UserService, $uibModal, $log) {
 
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.isAdministrator = UserService.isAdministrator;
@@ -14,11 +14,10 @@ define(['./module'], function (controllers) {
         /**--- Getting reg usr problems ---*/
         $scope.getUserProblems = function(userId) {
             ProblemService.getUserProblemsFromDb(userId)
-                .success(function (data) {
+                .then(function onSuccess(data) {
                     $scope.dataUserProblems = data;
 
-            })
-                .error(function (data, status, headers, config) {
+            },function onError (data, status, headers, config) {
                     throw error;
                 });
 
@@ -36,11 +35,11 @@ define(['./module'], function (controllers) {
             data.email = document.login.email.value;
             data.password = document.login.password.value;
 
-            UserService.logIn(data.email, data.password).success(function (userData) {
+            UserService.logIn(data.email, data.password).then(function onSuccess(userData) {
                 $scope.successLogIn(userData);
                 $scope.getUserProblems($scope.userId);
                 $window.location.href="/";
-            }).error(function (status, data) {
+            },function onError (status, data) {
                 console.log(status);
                 console.log(data);
             });
@@ -66,19 +65,21 @@ define(['./module'], function (controllers) {
             if (response.status === 'connected') {
                 FB.api('/me', function(response) {
 
-                    UserService.logIn(response.email, response.id).success(function(userData) {
+                    UserService.logIn(response.email, response.id)
+                        .then(function onSuccess(userData) {
 
                         $scope.successLogIn(userData);
 
-                    }).error(function(status, data) {
+                    },function onError(status, data) {
                         console.log(status);
                         console.log(data);
 
-                        UserService.register(response.first_name, response.last_name, response.email, response.id).success(function(userData) {
+                        UserService.register(response.first_name, response.last_name, response.email, response.id)
+                            .then(function onSuccess(userData) {
 
                             $scope.successLogIn(userData);
 
-                        }).error(function(status, data) {
+                        },function onError(status, data) {
                             console.log(status);
                             console.log(data);
                         });
@@ -148,9 +149,10 @@ define(['./module'], function (controllers) {
 
             //here must be validation!
 
-            UserService.logIn(email, password).success(function(userData) {
+            UserService.logIn(email, password)
+                .then(function onSuccess(userData) {
                 $scope.successLogIn(userData);
-            }).error(function(status, data) {
+            },function onError(status, data) {
                 console.log(status);
                 console.log(data);
             });
@@ -160,9 +162,10 @@ define(['./module'], function (controllers) {
 
             //and here must be validation!
 
-            UserService.register(username, surname, email, password).success(function(userData) {
+            UserService.register(username, surname, email, password)
+                .then(function onSuccess(userData) {
                 $scope.successLogIn(userData);
-            }).error(function(status, data) {
+            },function onError(status, data) {
                 console.log(status);
                 console.log(data);
             });
