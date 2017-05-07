@@ -19,7 +19,7 @@ define(['./module'],function (controllers){
         $scope.getWindowDimensions = windowWidth.getWindowDimensions;
         var width = $scope.getWindowDimensions();
 
-        $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
+        $scope.$watch($scope.getWindowDimensions, function (newValue) {
             if (newValue > 1000) {
                 $rootScope.style = function () {
                     return { 
@@ -28,7 +28,7 @@ define(['./module'],function (controllers){
                 };
             } else {
                 $rootScope.style = function () {
-                    return { 
+                    return {
                         'height': 'auto',
                         'padding-bottom' : '0'
                     };
@@ -36,7 +36,7 @@ define(['./module'],function (controllers){
             }
         });
 
-        $scope.$watch($scope.getActive, function (newValue, oldValue) {
+        $scope.$watch($scope.getActive, function (newValue) {
             width = $scope.getWindowDimensions();
             if (width <= 1000) {
                 if (newValue === "Точка") {
@@ -72,7 +72,7 @@ define(['./module'],function (controllers){
         };
 
         $scope.requiredData = function() {
-            if ($scope.problemData.title === "" || $scope.problemData.type === "" || $scope.problemData.latitude === "" || $scope.problemData.longtitude == "") {
+            if ($scope.problemData.title === "" || $scope.problemData.type === "" || $scope.problemData.latitude === "" || $scope.problemData.longtitude === "") {
                 return true;
             }
         };
@@ -123,17 +123,17 @@ define(['./module'],function (controllers){
                 dictInvalidFileType:"Невірний формат файлу. Допустимі формати : jpg,jpeg,img",
                 clickable:".previews",
                 previewsContainer:".previews",
-                dictFileTooBig: "Файл великого розміру ({{filesize}}MB). Максимальний розмір файлу: {{maxFilesize}}MB.", 
+                dictFileTooBig: "Файл великого розміру ({{filesize}}MB). Максимальний розмір файлу: {{maxFilesize}}MB."
             }
-        }
+        };
 
         $scope.submitProblem = function() {
             location.href = "#/map";
             $rootScope.getProblemsAndPlaceMarkers();
             $scope.getUserProblems($scope.userId);
-        }
+        };
 
-        $scope.$on('$routeChangeStart', function(event, next) { 
+        $scope.$on('$routeChangeStart', function() {
             $scope.clearGetCoordinatesListener();
         });
 

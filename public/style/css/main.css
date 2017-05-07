@@ -1624,7 +1624,7 @@ add adaptive style to showProblem
         left: 0;
         width: 100%;
         height: auto;
-        1max-height: 400px;
+        max-height: 400px;
     }
 
     .b-problems{
