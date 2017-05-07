@@ -75,7 +75,7 @@ define(['./module'],function(controllers){
 
         $scope.open = function (size) {
 
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/register.html',
                 controller: 'registerCtrl',
                 size: 'sm',

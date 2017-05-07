@@ -38,7 +38,7 @@ define(['./module'],function(controllers){
         $scope.alerts = [];
 
         $scope.closeAlert = function() {
-            $modalInstance.close(console.log('alert closed'));
+            $uibModalInstance.close(console.log('alert closed'));
         };
 
     }]);

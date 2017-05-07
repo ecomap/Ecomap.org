@@ -183,7 +183,7 @@ define(['./module'], function (controllers) {
 
         $scope.changePassword = function() {
             console.log('change password called');
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/changePassword.html',
                 controller: 'changePasswordCtrl',
                 size: 'sm',
@@ -203,7 +203,7 @@ define(['./module'], function (controllers) {
 
         $scope.resetPassword = function() {
             console.log('reset password called');
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/resetPassword.html',
                 controller: 'resetPasswordCtrl',
                 size: 'sm',

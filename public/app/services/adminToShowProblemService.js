@@ -100,7 +100,7 @@ define(['./module'],function(services) {
                     modalInstance.dismiss('cancel');
                 };
 
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     template: '<div class="modal-header">' +
                         '<h3 class="modal-title">Увага</h3>' +
                         '</div>' +
@@ -126,7 +126,7 @@ define(['./module'],function(services) {
 
                 $rootScope.alerts = [{ type: 'success', msg: 'Ви не зареєстрований користувач, тому проблема спочатку пройде модерацію і потім буде додана на карту.' }];
 
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     template: '<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>',
                     size: size,
                     scope: modalWindowScope

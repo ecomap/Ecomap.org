@@ -2,16 +2,18 @@ define(['./module'],function (controllers){
     'use strict';
     controllers.controller('addProblemCtrl', function ($scope,$rootScope,$window,windowWidth){
         $scope.tabs = [
-            {heading: "Точка", icon: "fa fa-map-marker", content: "app/templates/addMarker.html", active: true},
-            {heading: "Опис", icon: "fa fa-info-circle", content: "app/templates/addInfo.html", active: false},
-            {heading: "Фото", icon: "fa fa-file-photo-o", content: "app/templates/addPhotos.html", active: false}
-        ]
+            {heading: "Точка", icon: "fa fa-map-marker", content: "app/templates/addMarker.html"},
+            {heading: "Опис", icon: "fa fa-info-circle", content: "app/templates/addInfo.html"},
+            {heading: "Фото", icon: "fa fa-file-photo-o", content: "app/templates/addPhotos.html"}
+        ];
+
         $scope.fileSizeLeft = 20;
         $scope.fileCountLeft = 10;
-        $scope.active = function() {
-            return $scope.tabs.filter(function(tab){
-                return tab.active;
-            })[0].heading;
+
+        $scope.getActive = function() {
+            if(typeof $scope.tabs.active === "undefined")
+                return null;
+            return $scope.tabs[$scope.tabs.active].heading;
         };
 
         $scope.getWindowDimensions = windowWidth.getWindowDimensions;
@@ -34,10 +36,10 @@ define(['./module'],function (controllers){
             }
         });
 
-        $scope.$watch($scope.active, function (newValue, oldValue) {
+        $scope.$watch($scope.getActive, function (newValue, oldValue) {
             width = $scope.getWindowDimensions();
             if (width <= 1000) {
-                if (newValue == "Точка") {
+                if (newValue === "Точка") {
                     $rootScope.style = function () {
                         return { 
                             'height': 'auto',
@@ -70,10 +72,10 @@ define(['./module'],function (controllers){
         };
 
         $scope.requiredData = function() {
-            if ($scope.problemData.title == "" || $scope.problemData.type == "" || $scope.problemData.latitude == "" || $scope.problemData.longtitude == "") {
+            if ($scope.problemData.title === "" || $scope.problemData.type === "" || $scope.problemData.latitude === "" || $scope.problemData.longtitude == "") {
                 return true;
             }
-        }
+        };
 
         $rootScope.$broadcast('Update',"_problem");
         //function that places marker on the map

@@ -36,7 +36,7 @@ define(['./module'],function(controllers){
         $scope.closeAlert = function(index) {
             $scope.alerts.splice(index, 1);
             if($scope.formHide)
-                $modalInstance.close(console.log('alert closed'));
+                $uibModalInstance.close(console.log('alert closed'));
         };
 
     }]);
