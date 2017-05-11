@@ -1,3 +1,19 @@
+How to run
+===
+1. Install node_modules: open terminal in root directory and type 'npm install'
+2. Install node_modules: open terminal in root/public directory and type 'npm install'
+3. Install bower_components: open terminal in root/public directory and type 'bower install'
+4. Execute grunt: open terminal in root/public directory and type 'grunt'
+5. Execute EnviromapDB.sql: 
++ open terminal in root directory
++ type 'mysql' in command line (in case of error type 'mysql -u root -p')
++ type 'source EnviromapDB.sql'
+6. Go to api.js in root directory and modify 'connectionPool': change user and password fields to appropriate.
+7. Go to filldb.js in root directory and modify 'connection': change user and password fields to appropriate.
+8. Execute filldb.js: open terminal in root directory and type 'node filldb.js'
+9. Run server: open terminal in root directory and type 'node api.js'
+10. Open site: http://127.0.0.1:8090/#/map
+
 API
 ===
 User's API:
