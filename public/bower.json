@@ -19,11 +19,11 @@
     "angular-i18n": "^1.6.4",
     "glyphicons": "^0.0.2",
     "font-awesome": "^4.7.0",
-    "dropzone": "^3.12.0",
-    "d3": "^3.5.17",
+    "dropzone": "^4.3.0",
+    "d3": "^4.8.0",
     "angular-cookie": "^4.1.0",
-    "socket.io-client": "^0.9.17",
-    "socket.io": "^0.9.17",
+    "socket.io-client": "^1.7.2",
+    "socket.io": "^1.7.3",
     "requirejs": "^2.3.3"
   }
 }

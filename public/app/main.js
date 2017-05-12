@@ -13,16 +13,16 @@ require.config({
         'domReady': '../bower_components/requirejs-domready/domReady',
         'require': '../bower_components/requirejs/require',
         'facebook': './js/facebook',
-        'dropzone':'../bower_components/dropzone/downloads/dropzone',
-        // 'dropzone':'../bower_components/dropzone/dist/dropzone',
+        // 'dropzone':'../bower_components/dropzone/downloads/dropzone',
+        'dropzone':'../bower_components/dropzone/dist/dropzone',
     /* 'btford.socket-io': '../bower_components/btford.socket-io',*/
         // 'textAngular':'../bower_components/textAngular/src/textAngular',
         'textAngular':'../bower_components/textAngular/dist/textAngular',
         'ngSanitize':'../bower_components/textAngular/src/textAngular-sanitize',
         'textAngularSetup':'../bower_components/textAngular/src/textAngularSetup',
         'ngResource':  '../bower_components/angular-resource/angular-resource',
-        'socket.io':'../bower_components/socket.io-client/dist/socket.io',
         'socket':'../bower_components/angular-socket-io/socket',
+        'socket.io':'../bower_components/socket.io-client/dist/socket.io',
         'angular-bootstrap-tpls':'../bower_components/angular-bootstrap/ui-bootstrap-tpls',
         'ngTouch':'../bower_components/angular-touch/angular-touch',
         'ngAnimate':'../bower_components/angular-animate/angular-animate',
@@ -51,6 +51,9 @@ require.config({
             exports: 'io',
             deps: ['angular']
         },
+        'socket': {
+            deps: ['socket.io']
+        },
         'angular-route': {
             deps: ['angular']
         },
@@ -65,9 +68,6 @@ require.config({
         },
         'ngAnimate':{
             deps: ['angular']
-        },
-         'socket': {
-            deps: ['socket.io']
         },
 
         'angular-mocks': {
