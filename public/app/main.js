@@ -13,8 +13,8 @@ require.config({
         'domReady': '../bower_components/requirejs-domready/domReady',
         'require': '../bower_components/requirejs/require',
         'facebook': './js/facebook',
-        // 'dropzone':'../bower_components/dropzone/downloads/dropzone',
-        'dropzone':'../bower_components/dropzone/dist/dropzone',
+        'dropzone':'../bower_components/dropzone/downloads/dropzone',
+        // 'dropzone':'../bower_components/dropzone/dist/dropzone',
     /* 'btford.socket-io': '../bower_components/btford.socket-io',*/
         // 'textAngular':'../bower_components/textAngular/src/textAngular',
         'textAngular':'../bower_components/textAngular/dist/textAngular',
