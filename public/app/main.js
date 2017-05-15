@@ -101,4 +101,5 @@ require.config({
         // kick start application... see bootstrap.js
         './bootstrap'
     ]
+
 });
