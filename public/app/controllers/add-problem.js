@@ -130,6 +130,7 @@ define(['./module'],function (controllers){
         $scope.submitProblem = function() {
             location.href = "#/map";
             $rootScope.getProblemsAndPlaceMarkers();
+            console.log("addProblem -> submitProblem");
             $scope.getUserProblems($scope.userId);
         };
 

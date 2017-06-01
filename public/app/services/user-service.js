@@ -28,7 +28,7 @@
             },
 
             isAdministrator: function () {
-                if (ipCookie('userRole') == 'administrator') {
+                if (ipCookie('userRole') === 'administrator') {
                     return true;
                 } else {
                     return false;

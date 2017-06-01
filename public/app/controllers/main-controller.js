@@ -12,11 +12,11 @@ define(['./module'],function(controllers){
                 $scope.swipeHide();
             }
 
-        }
+        };
         
         $rootScope.$broadcast('Update',"");
         $scope.swipeHide = function(params){
-            if(params=="dropzone"){
+            if(params==="dropzone"){
                         $rootScope.$broadcast('Update',"");
             
             }else{
@@ -65,7 +65,7 @@ define(['./module'],function(controllers){
             $scope.messageLog=$rootScope.messageLog;
 
 
-            if ($scope.showRigthSide != message&&message!=undefined){
+            if ($scope.showRigthSide !== message&&message!==undefined){
                 $scope.showRigthSide = message;
             }
         });
@@ -96,16 +96,16 @@ define(['./module'],function(controllers){
 
         $scope.$location = function () {
             return $location.path();
-        }
+        };
 
         $scope.$watch($scope.$location, function (newValue, oldValue){
-            if (newValue != "/problem/addProblem") {
+            if (newValue !== "/problem/addProblem") {
                 $rootScope.style = function () {
                     return { 
                         'height': 'calc(100%-52px);'
                     };
                 };
-            };
+            }
         });
 
     }]);

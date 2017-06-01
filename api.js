@@ -146,7 +146,7 @@ var addComment = function(req,res) {
                     userSurname:req.body.data.userSurname
 
                 };
-                if(req.body.data.userId==undefined) {
+                if(req.body.data.userId===undefined) {
                     content.userName="(Анонім)";
                     req.body.userId = 2;
                 }

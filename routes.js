@@ -1009,7 +1009,7 @@ exports.postVote = function(req,res){  //+1 vote for a problem
 };
 exports.logIn = function(req, res) {
     console.log("start getUserActivity API function");
-    //console.log("email is - " + req.body.email + ", pass is - " +req.body.password);
+    // console.log("email is - " + req.body.email + ", pass is - " +req.body.password);
     req.getConnection(function(err, connection) {
         if (err) {
             res.statusCode = 503;
