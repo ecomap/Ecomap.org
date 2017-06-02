@@ -3,7 +3,7 @@ define(['./module'],function(controllers){
 
     controllers.controller('SocketCtrl', function ($log, $scope, SocketService,$rootScope,$interval,$http,ipCookie) {
         $rootScope.$broadcast('Update',"_problem");
-        $rootScope.$emit('showSlider','false');
+        // $rootScope.$emit('showSlider','false');
         $scope.deleteItem="clear";
         // $scope.message="";
         $scope.currentItemNews=-1;

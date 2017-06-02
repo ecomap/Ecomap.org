@@ -22,8 +22,8 @@ define(['./module'],function(services){
           },
           getNewsFromDb:function(uploadScope){
               return $http.get('/api/getNews',{})
-              .then(function onSuccess(data,status,headers,config){
-                  uploadScope(data);
+              .then(function onSuccess(response){
+                  uploadScope(response.data);
 
               },function onError (data,status,headers,config){
                   throw error;
