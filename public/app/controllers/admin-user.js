@@ -215,6 +215,7 @@ define(['./module'], function (controllers) {
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-        }
+        };
+
     }]);
 });

@@ -13,6 +13,8 @@ define([
     './editProblemContent',
     './stopEvent-directive',
     './problemFilters-directive',
+    './problemFiltersSimple-directive',
+    './userFiltersSimple-directive',
     './notApproved-directive',
     './slider-directive',
     './closeBut',

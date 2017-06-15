@@ -35,6 +35,10 @@ define(['./app'], function (app) {
                 templateUrl: 'app/templates/statistic.html',
                 controller: 'statsCtrl'
             })
+            .when('/adminRoom', {
+                templateUrl: 'app/templates/adminRoom.html',
+                controller: 'adminRoomCtrl'
+            })
             .otherwise({
                 redirectTo: '/map'
             });

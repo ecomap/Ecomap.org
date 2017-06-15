@@ -46,6 +46,7 @@ define(['./module'], function(controllers){
                 window.location.href="#/map";
             } else {
                 problem = response.data[0][0];
+                console.log(response.data);
                 $scope.problem =  problem;
                 $scope.problem.Coordinates = {
                     lat: response.data[0][0].Latitude,

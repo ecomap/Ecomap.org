@@ -29,6 +29,7 @@ html, body {
     height: 100%;
 }
 
+
 .b-container {
     position: relative;
     height: 100%;
@@ -1222,6 +1223,107 @@ form.dropzone {
     padding: 0 15px 10px 30px;
     font-size: 0.7em;
 }
+.admin-room{
+    padding: 30px 10px 10px 10px;
+    overflow: auto;
+    font-size: 0.7em;
+    text-align: center;
+}
+
+.admin-room .section-heading{
+    margin-bottom: 15px;
+}
+
+.admin-room .nav-tabs li a {
+    color: #777;
+    font-size: 18px;
+}
+
+.admin-room .new-problem-list{
+    height:400px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    background-color: #f1f1f1;
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    border: rgba(0,0,0,0.1) 2px solid;
+    overflow: auto;
+    padding: 5px;
+
+}
+
+.admin-room .new-problem-item{
+    background-color: #ffffff;
+    border: rgba(0,0,0,0.1) 2px solid;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    display: flex;
+}
+
+.admin-room .new-problem-item:hover{
+    background: linear-gradient(to bottom, rgb(236, 235, 225) 10%, rgb(230, 227, 208));
+    text-decoration: none;
+}
+
+.admin-room .problem-description{
+    color: #777;
+    padding-left: 20px;
+    display: inline-block;
+}
+
+.admin-room .problem-description h3{
+    margin-top: 6px;
+}
+
+.admin-room .problem-description .about{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 400px;
+}
+
+.admin-room .search{
+    padding-left: 34px;
+}
+
+.admin-room .search-icon-container{
+    position: relative;
+}
+
+.admin-room .search-icon-container i{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.admin-room .user-list{
+    height: 400px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #f1f1f1;
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    border: rgba(0,0,0,0.1) 2px solid;
+    padding: 5px;
+    overflow: auto;
+}
+.admin-room .user-item{
+    background-color: #ffffff;
+    border: rgba(0,0,0,0.1) 2px solid;
+    margin-bottom: 10px;
+    padding: 0 12px;
+}
+
+.admin-room .user-item:hover{
+    background: linear-gradient(to bottom, rgb(236, 235, 225) 10%, rgb(230, 227, 208));
+}
+
+.admin-room .user-item .main-info{
+    display: inline-block;
+}
+
+.admin-room .user-item .role-info{
+    display: inline-block;
+}
+
 .editor {
     padding: 30px 5px 5px 5px;
     overflow: auto;
@@ -1717,4 +1819,12 @@ add adaptive style to showProblem
     width: 100%;
     z-index: 4000;
     opacity: 0.6;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex.center{
+    justify-content: center;
 }
