@@ -198,6 +198,69 @@ exports.getProblems = function(req,res){ // get all moderated problems in brief 
     });
 };
 
+exports.getNewProblems = function(req,res){ // get all new problems in brief (id, title, coordinates, type)
+    console.log("start to get information about new problems");
+    var photoArray = [];
+    var newProblems;
+    req.getConnection(function(err, connection) {
+        if (err) {
+            res.statusCode = 500;
+            res.send({
+                err: err.code
+            });
+            console.log('Can`t connect to db in getNewProblems API call\n' + err +"\n");
+        } else {
+            try{
+                connection.query('SELECT Problems.Id, Problems.Title, Problems.Content,  Problems.ProblemTypes_Id, Problems.Status, Activities.Date FROM Problems LEFT JOIN Activities ON Problems.Id=Activities.Problems_Id WHERE Moderation=1 AND ActivityTypes_Id=1 AND Checked IS NULL', function(err, rows1) {
+                    if (err) {
+                        res.statusCode = 500;
+                        res.send({
+                            err: err.code
+                        });
+                        console.error('Can`t make request to Problems db\n', err);
+                    } else {
+                        //res.send(rows1);
+                        //console.log("end to get information about new problems \n");
+
+                        rows1.forEach(function (problem, index) {
+
+                            connection.query('SELECT * FROM Photos WHERE Problems_Id=?', [problem.Id], function (err2, rows2){
+                               if(err2){
+                                   console.error('Can`t make query\n', err2);
+                                   res.statusCode = 500;
+                                   res.send({
+                                    err2: err2.code
+                                   });
+                               } else if(rows2.length === 0) {
+                                   console.log("there is no photos referring to problem with id:" + problem.Id);
+                                   // copy  = Object.assign(problem);
+                                   // copy.photos = [{Link: null}];
+                                   photoArray[index] = {Link: null};
+                                   // console.log("1: "+copy);
+                               } else{
+                                   // copy  = Object.assign(problem);
+                                   // copy.photos = rows2;
+                                   photoArray[index] = rows2;
+                               }
+                               if(index === rows1.length -1){
+                                   newProblems = rows1.map(function (problem, index) {
+                                       problem.photos = photoArray[index];
+                                       return problem;
+                                   });
+                                   res.send(newProblems);
+                               }
+                            });
+                        });
+                    }
+                });
+            }
+            catch(err){
+                console.log("Can`t make query for getNewProblems \n");
+            }
+        }
+    });
+};
+
 exports.getProblemId = function(req,res){ //get detailed problem description (everything)
     console.log("start to get information about problem  with id:" + req.params.id);
     req.getConnection(function(err, connection) {
@@ -566,7 +629,7 @@ exports.postProblem = function(req,res){  //post new problem
                     ProblemTypes_Id: req.body.type,
                     Votes:0
                 };
-                if(req.body.userId==undefined){
+                if(req.body.userId===undefined){
                     data.Moderation ='0';
                 }
                 else {

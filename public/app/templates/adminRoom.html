@@ -16,7 +16,7 @@
                         <div class="new-problem-list">
                             <a class="new-problem-item text-left flex" ng-repeat="problem in problemsToShow"
                                ng-href="/#/problem/showProblem/{{problem.Id}}">
-                                <img ng-src="photos/large/{{problem.photo}}" class="b-details-body-problem-photo"/>
+                                <img ng-src="photos/large/{{problem.photos[0].Link}}" class="b-details-body-problem-photo"/>
 
                                 <div class="problem-description">
                                     <h3>{{problem.Title}}</h3>

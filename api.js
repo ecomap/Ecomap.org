@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 var connectionPool = {
     host     : 'localhost',
     user     : 'root',
-    password : '1',
+    password : 'root',
     database : 'Enviromap'
 };
 
@@ -195,6 +195,7 @@ var addComment = function(req,res) {
 //////////////////
 //user
 app.get('/api/problems', routes.getProblems);
+app.get('/api/newProblems', routes.getNewProblems);
 app.get('/api/push/', routes.push);
 app.get('/api/problems/:id', routes.getProblemId);
 app.get('/api/users/:idUser', routes.getUserById);
