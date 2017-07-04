@@ -1,6 +1,6 @@
 define(['./module'],function (controllers) {
     'use strict';
-    controllers.controller('notApprovedCtrl', ['$scope', '$rootScope', 'UserService', 'adminToShowProblemService', function ($scope, $rootScope, UserService, adminToShowProblemService) {
+    controllers.controller('notApprovedCtrl', ['$scope', '$rootScope', 'UserService', 'AdminService', function ($scope, $rootScope, UserService, adminToShowProblemService) {
         $scope.isAdministrator = UserService.isAdministrator;
 
         if ($scope.isAdministrator()) {

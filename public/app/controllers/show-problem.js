@@ -1,6 +1,6 @@
 define(['./module'], function(controllers){
     'use strict';
-    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$uibModal','adminToShowProblemService','$window','UserService','ActivityService','$route', function ($scope,$routeParams,ProblemService,ipCookie,$rootScope,$uibModal,adminToShowProblemService,$window, UserService,ActivityService,$route){
+    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$uibModal','AdminService','$window','UserService','ActivityService','$route', function ($scope, $routeParams, ProblemService, ipCookie, $rootScope, $uibModal, adminToShowProblemService, $window, UserService, ActivityService, $route){
         $scope.isAdministrator = UserService.isAdministrator;
 
         if($scope.uploadRightSide){
@@ -11,11 +11,7 @@ define(['./module'], function(controllers){
         adminToShowProblemService.setEditStatus($scope.isAdministrator());
         $scope.editStatusClass = adminToShowProblemService.getEditStatus(3);
         $scope.delStatus = adminToShowProblemService.getEditStatus(0);
-        if(adminToShowProblemService.getNotApprovedProblemListQty () !== 0){
-            $scope.addStatus = adminToShowProblemService.getEditStatus(2);
-        }else{
-            $scope.addStatus = adminToShowProblemService.getEditStatus(3);
-        }
+        $scope.addStatus = adminToShowProblemService.getEditStatus(3);
 
         $rootScope.$broadcast('Update',"_problem");
         // $rootScope.$emit('showSlider','false');
@@ -55,6 +51,8 @@ define(['./module'], function(controllers){
                 activity = response.data[2][0];
                 userID =activity.Users_Id;
                 problemID = parseInt(problem.Id);
+                if(!problem.Moderation)
+                    $scope.addStatus = adminToShowProblemService.getEditStatus(2);
                 $scope.problem.Severity = parseInt(problem.Severity) || 1;
                 $scope.problem.Content = problem.Content || 'опис відсутній';
                 $scope.problem.Title = problem.Title || 'назва відсутня';
@@ -276,6 +274,7 @@ define(['./module'], function(controllers){
 
         //addproblemtoDB
         $scope.addProblemToDB = function(){
+            console.log(UserService.getSaveChangeStatus());
             if(UserService.getSaveChangeStatus()){
                 $scope.notApproved = adminToShowProblemService.deleteNotApprovedProblemFromList(problem);
                 adminToShowProblemService.approveNotApprovedProblem(problem).then(function(){
@@ -287,7 +286,7 @@ define(['./module'], function(controllers){
                     }
                 })
             }
-        }
+        };
 
         //delete problem from DB
         $scope.deleteProblemFromDb = function(){

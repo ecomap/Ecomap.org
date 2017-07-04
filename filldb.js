@@ -50,7 +50,7 @@ var connection = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'root',
+        password: '1',
         database: 'Enviromap'
     });
 
@@ -152,12 +152,11 @@ function fillProblemsActivities() {
                 Content: content,
                 Proposal: proposal,
                 Severity: probs[i].severity,
-                Moderation: 1,
+                Moderation:  probs[i].moderation,
                 Votes: probs[i].votes,
                 Latitude: probs[i].lat,
                 Longtitude: probs[i].lon,
                 Status: probs[i].probStatus,
-                Checked: probs[i].probChecked,
                 ProblemTypes_Id: probs[i].probType
             };
             connection.query("INSERT INTO Problems SET ?", data, function (err, rows, fields) {

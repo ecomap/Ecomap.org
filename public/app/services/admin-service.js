@@ -2,7 +2,7 @@ define(['./module'],function(services) {
     'use strict';
 
 
-    services.factory('adminToShowProblemService', function($http, $uibModal, $rootScope) {
+    services.factory('AdminService', function($http, $uibModal, $rootScope) {
         var notApproved = undefined;
         var notApprovedProblemListQty = 0;
         var adminMode = false;
@@ -22,6 +22,9 @@ define(['./module'],function(services) {
         };
         var currentEditStatus = '';
         return {
+            getUsers: function () {
+              return $http({method: 'GET', url: '/api/users'});
+            },
             getNotApprovedProblem:function(getNotApproved){
                 $http({ method: 'GET', url: '/api/not_approved' })
                     .then(function onSuccess (data) {
@@ -40,7 +43,7 @@ define(['./module'],function(services) {
 
             deleteNotApprovedProblemFromList:function(problem){
                     for (var i = 0; i < notApproved.length; i++) {
-                        if (problem.Id == notApproved[i].Id) {
+                        if (problem.Id === notApproved[i].Id) {
                             notApproved.splice(i, 1);
                             notApprovedProblemListQty = notApproved.length;
                             return notApproved;
@@ -62,7 +65,7 @@ define(['./module'],function(services) {
             },
 
             getNotApprovedProblemListQty: function (){
-                if (notApprovedProblemListQty != 0) {
+                if(notApprovedProblemListQty !== 0) {
                     return true;
                 }else {
                     return false;

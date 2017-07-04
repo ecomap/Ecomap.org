@@ -211,7 +211,7 @@ exports.getNewProblems = function(req,res){ // get all new problems in brief (id
             console.log('Can`t connect to db in getNewProblems API call\n' + err +"\n");
         } else {
             try{
-                connection.query('SELECT Problems.Id, Problems.Title, Problems.Content,  Problems.ProblemTypes_Id, Problems.Status, Activities.Date FROM Problems LEFT JOIN Activities ON Problems.Id=Activities.Problems_Id WHERE Moderation=1 AND ActivityTypes_Id=1 AND Checked IS NULL', function(err, rows1) {
+                connection.query('SELECT Problems.Id, Problems.Title, Problems.Content,  Problems.ProblemTypes_Id, Problems.Status, Activities.Date FROM Problems LEFT JOIN Activities ON Problems.Id=Activities.Problems_Id WHERE Moderation IS NULL AND ActivityTypes_Id=1', function(err, rows1) {
                     if (err) {
                         res.statusCode = 500;
                         res.send({
@@ -232,7 +232,7 @@ exports.getNewProblems = function(req,res){ // get all new problems in brief (id
                                     err2: err2.code
                                    });
                                } else if(rows2.length === 0) {
-                                   console.log("there is no photos referring to problem with id:" + problem.Id);
+                                   // console.log("there is no photos referring to problem with id:" + problem.Id);
                                    // copy  = Object.assign(problem);
                                    // copy.photos = [{Link: null}];
                                    photoArray[index] = {Link: null};
@@ -395,6 +395,39 @@ exports.getResource = function(req,res){ //get resourse
             catch(err){
                 console.log('Can`t send information to client getResource API' + err + '\n');
             }
+        }
+    });
+};
+
+exports.getUsers = function(req,res) { //get all user information(name and etc)
+    console.log("start getUsers API function");
+    req.getConnection(function(err, connection) {
+        if (err) {
+            res.statusCode = 503;
+            res.send({
+                err:    err.code
+            });
+            console.log('Can`t connect to db in getUsers API call\n' + err +"\n");
+        } else {
+            connection.query('SELECT Id, Name, Surname, Email, UserRoles_Id FROM Users', function(err, rows) {
+                if (err) {
+                    res.statusCode = 500;
+                    res.send({
+                        err:    err.code
+                    });
+                    console.error('Can`t make query for Users.Id = '+ idUser +'\n' + err +"\n");
+                }
+                if(rows.length === 0) {
+                    console.log("there is no Users info" + '\n');
+                }
+                try{
+                    res.send(rows);
+                    console.log("end getUsers API function");
+                }
+                catch(err){
+                    console.log('Can`t send information to client in getUsers API' + err + '\n');
+                }
+            });
         }
     });
 };
@@ -624,13 +657,13 @@ exports.postProblem = function(req,res){  //post new problem
                     Proposal: req.body.proposal,
                     Latitude: req.body.latitude,
                     Longtitude: req.body.longitude,
-                    Moderation:'1',
+                    Moderation:null,
                     Status: 0,
                     ProblemTypes_Id: req.body.type,
                     Votes:0
                 };
                 if(req.body.userId===undefined){
-                    data.Moderation ='0';
+                    data.Moderation = null;
                 }
                 else {
                     var idUser = req.body.userId;
@@ -1250,10 +1283,10 @@ exports.notApprovedProblems = function(req, res) {
                     if(err) {
                         return res.send(401);
                     }
-                    if (decoded.role != 'administrator') {
+                    if (decoded.role !== 'administrator') {
                         return res.send(401);
                     }
-                    connection.query('SELECT Problems.Id, Problems.Title, Problems.Latitude, Problems.Longtitude, Activities.Date FROM Problems JOIN Activities ON Problems.Id = Activities.Problems_Id WHERE Moderation =0;', function(err, rows, fields) {
+                    connection.query('SELECT Problems.Id, Problems.Title, Problems.Latitude, Problems.Longtitude, Activities.Date FROM Problems JOIN Activities ON Problems.Id = Activities.Problems_Id WHERE Moderation IS NULL;', function(err, rows, fields) {
                         if (err) {
                             res.statusCode = 500;
                             res.send({
@@ -1344,7 +1377,7 @@ exports.approveProblem = function(req, res) {
                     if(err) {
                         return res.send(401);
                     }
-                    if (decoded.role != 'administrator') {
+                    if (decoded.role !== 'administrator') {
                         return res.send(401);
                     }
                     var id=req.params.id;

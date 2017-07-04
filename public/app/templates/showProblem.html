@@ -100,7 +100,7 @@
             </tab>
         </tabset>
         <div class="b-commandButtons-group">
-            <button type="button" class="btn btn-sm {{editStatusClass}}"  ng-click="saveChangestoDb(problem.Title,problem.Severity, problem.Status, problem.Content,problem.Proposal)" >Збережіть зміни</button>
+            <button type="button" class="btn {{editStatusClass}} btn-sm"  ng-click="saveChangestoDb(problem.Title,problem.Severity, problem.Status, problem.Content,problem.Proposal)" >Збережіть зміни</button>
             <button type="button" class="btn {{addStatus}} btn-sm" ng-click="addProblemToDB()" >Додати проблему до бази</button>
             <button type="button" class="btn {{delStatus}} btn-sm"  ng-click="deleteProblemFromDb()" >Видалити проблему з бази</button>
         </div>

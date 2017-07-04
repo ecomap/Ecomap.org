@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS `Problems` (
   `Latitude` FLOAT(9,6) NULL,
   `Longtitude` FLOAT(9,6) NULL,
   `Status` TINYINT(1) NULL,
-  `Checked` TINYINT(1) NULL,
   `ProblemTypes_Id` INT NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC),

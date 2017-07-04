@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 var connectionPool = {
     host     : 'localhost',
     user     : 'root',
-    password : 'root',
+    password : '1',
     database : 'Enviromap'
 };
 
@@ -219,6 +219,7 @@ app.post('/api/changePassword', routes.changePassword);
 //admin
 app.get('/api/not_approved', routes.notApprovedProblems);
 app.delete('/api/problem/:id', routes.deleteProblem);
+app.get('/api/users', routes.getUsers);
 app.delete('/api/user/:id', routes.deleteUser);
 app.delete('/api/activity/:id', routes.deleteComment);
 app.delete('/api/photo/:link', routes.deletePhoto);

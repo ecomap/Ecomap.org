@@ -1317,10 +1317,12 @@ form.dropzone {
 }
 
 .admin-room .user-item .main-info{
+    padding: 5px 10px;
     display: inline-block;
 }
 
 .admin-room .user-item .role-info{
+    padding: 5px 10px;
     display: inline-block;
 }
 
