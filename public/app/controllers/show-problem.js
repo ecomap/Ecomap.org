@@ -1,6 +1,6 @@
 define(['./module'], function(controllers){
     'use strict';
-    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$modal','adminToShowProblemService','$window','UserService','ActivityService','$route', function ($scope,$routeParams,ProblemService,ipCookie,$rootScope,$modal,adminToShowProblemService,$window, UserService,ActivityService,$route){
+    controllers.controller('showProblemCtrl',['$scope','$routeParams','ProblemService','ipCookie','$rootScope','$uibModal','AdminService','$window','UserService','ActivityService','$route', function ($scope, $routeParams, ProblemService, ipCookie, $rootScope, $uibModal, adminToShowProblemService, $window, UserService, ActivityService, $route){
         $scope.isAdministrator = UserService.isAdministrator;
 
         if($scope.uploadRightSide){
@@ -11,20 +11,15 @@ define(['./module'], function(controllers){
         adminToShowProblemService.setEditStatus($scope.isAdministrator());
         $scope.editStatusClass = adminToShowProblemService.getEditStatus(3);
         $scope.delStatus = adminToShowProblemService.getEditStatus(0);
-        if(adminToShowProblemService.getNotApprovedProblemListQty () != 0){
-            $scope.addStatus = adminToShowProblemService.getEditStatus(2);
-        }else{
-            $scope.addStatus = adminToShowProblemService.getEditStatus(3);
-        }
+        $scope.addStatus = adminToShowProblemService.getEditStatus(3);
 
         $rootScope.$broadcast('Update',"_problem");
-        $rootScope.$emit('showSlider','false');
-        $scope.showSlider = false;
+        // $rootScope.$emit('showSlider','false');
+
         $scope.showSliderFunc = function(){
-            $rootScope.$emit('showSlider','true');
             $rootScope.$emit('get');
-        }
-        if(ipCookie('vote'+$routeParams.problemID)==true){
+        };
+        if(ipCookie('vote'+$routeParams.problemID)){
           
           $scope.disableVoteButton=true;
       }else{
@@ -40,25 +35,29 @@ define(['./module'], function(controllers){
         var problemModerationStatus;
         var tempContent = '';
         //get problem info
-        ProblemService.getProblemByIdFromDb($routeParams.problemID).success(function (data) {
-            if(data.error) {
+        ProblemService.getProblemByIdFromDb($routeParams.problemID)
+            .then(function onSuccess (response) {
+            if(response.status!==200) { //error
                 $rootScope.$broadcast('Update',"_hide");
                 window.location.href="#/map";
             } else {
-                problem = data[0][0];
+                problem = response.data[0][0];
+                console.log(response.data);
                 $scope.problem =  problem;
                 $scope.problem.Coordinates = {
-                    lat: data[0][0].Latitude,
-                    lng: data[0][0].Longtitude
+                    lat: response.data[0][0].Latitude,
+                    lng:  response.data[0][0].Longtitude
                 };
-                activity = data[2][0];
+                activity = response.data[2][0];
                 userID =activity.Users_Id;
                 problemID = parseInt(problem.Id);
+                if(!problem.Moderation)
+                    $scope.addStatus = adminToShowProblemService.getEditStatus(2);
                 $scope.problem.Severity = parseInt(problem.Severity) || 1;
                 $scope.problem.Content = problem.Content || 'опис відсутній';
                 $scope.problem.Title = problem.Title || 'назва відсутня';
                 $scope.problem.CreatedDate =activity.Date;
-                $scope.photos = data[1];
+                $scope.photos = response.data[1];
                 $scope.path = "images/markers/" + problem.ProblemTypes_Id + ".png";
                  var width = $scope.getWindowDimensions();
                 if (width < 1000) {
@@ -74,28 +73,28 @@ define(['./module'], function(controllers){
                 $scope.problem.userName = tempUser.userName;
                 $scope.problem.Proposal = problem.Proposal;
 
-                $scope.activities = data[2].reverse();
+                $scope.activities = response.data[2].reverse();
                 for(var i=0;i<$scope.activities.length;i++){
-                    if($scope.activities[i].userId!=1) {
+                    if($scope.activities[i].userId !== 1) {
                         $scope.activities[i].Content = JSON.parse($scope.activities[i].Content);
                     }
                 }
                 $scope.$watch('checkedbox', function(newValue, oldValue) {
-                    if(newValue != oldValue ) {
+                    if(newValue !== oldValue ) {
                         $scope.editStatusClass =  adminToShowProblemService.getEditStatus(1);
                         $scope.problem.Status = newValue;
                         UserService.setSaveChangeStatus(false);
                     }
                 });
                 $scope.$watch('problem.Title', function(newValue, oldValue) {
-                    if(newValue != oldValue ){
+                    if(newValue !== oldValue ){
                         $scope.editStatusClass =  adminToShowProblemService.getEditStatus(1);
                         $scope.problem.Title = newValue;
                         UserService.setSaveChangeStatus(false);
                     }
                 });
                 $scope.$watch('problem.Severity', function(newValue, oldValue) {
-                    if(newValue != oldValue ) {
+                    if(newValue !== oldValue ) {
                         $scope.editStatusClass =  adminToShowProblemService.getEditStatus(1);
                         $scope.problem.Severity = newValue;
                         UserService.setSaveChangeStatus(false);
@@ -103,22 +102,21 @@ define(['./module'], function(controllers){
                     }
                 });
                 $scope.$watch('problem.Content', function(newValue, oldValue) {
-                    if(newValue != oldValue && UserService.getSaveChangeStatus() == true) {
+                    if(newValue !== oldValue && UserService.getSaveChangeStatus() === true) {
                         $scope.problem.Content = newValue;
                         UserService.setSaveChangeStatus(false);
                         $scope.editStatusClass =  adminToShowProblemService.getEditStatus(1);
                     }
                 });
                 $scope.$watch('problem.Proposal', function(newValue, oldValue) {
-                    if(newValue != oldValue && UserService.getSaveChangeStatus() == true) {
+                    if(newValue !== oldValue && UserService.getSaveChangeStatus() === true) {
                         $scope.problem.Proposal = newValue;
                         UserService.setSaveChangeStatus(false);
                         $scope.editStatusClass =  adminToShowProblemService.getEditStatus(1);
                     }
                 });
             }
-        })
-            .error(function (data, status, headers, config) {
+        },function onError (data, status, headers, config) {
                 throw error;
             });
 
@@ -146,7 +144,7 @@ define(['./module'], function(controllers){
             }
         };
         $scope.showDrop = function(){
-            if($scope.showDropField==false)
+            if($scope.showDropField===false)
             {
                 $scope.showDropField = true;
                 $scope.showAddPhotoButton = false;
@@ -169,22 +167,21 @@ define(['./module'], function(controllers){
         };
         $scope.deletePhoto = function(index){
             ProblemService.deletePhotoFromdb($scope.photos[index].Link)
-                .success(function (data, status, headers, config) {
+                .then(function onSuccess (response) {
                     var tempArray=[];
                    for(var i =0;i<$scope.photos.length;i++)
                    {
-                       if(i!=index){
+                       if(i!==index){
                            tempArray.push($scope.photos[i]);
 
                        }
                    }
                     $scope.photos = tempArray;
                     console.log($scope.photos);
-                })
-                .error(function (data, status, headers, config) {
+                },function onError (data, status, headers, config) {
                     throw error;
                 });
-        }
+        };
 
        
 
@@ -199,7 +196,7 @@ define(['./module'], function(controllers){
         $scope.checkpoint = [true,true,true,true,true,true];
         $scope.filterActivity = function(i){
 
-            if($scope.checkpoint[i]==true){
+            if($scope.checkpoint[i]===true){
                 $scope.checkpoint[i]=false;
                 $scope.x=0.3;
 
@@ -215,7 +212,7 @@ define(['./module'], function(controllers){
         };
 
         //show message over the Severity rating
-        $rootScope.isReadonly = $scope.isAdministrator()?false:true;
+        $rootScope.isReadonly = !$scope.isAdministrator();
         $scope.showStatus = false;
 
         var severityMessage = {
@@ -234,7 +231,7 @@ define(['./module'], function(controllers){
         $scope.resetRating = function (rate){
             $scope.showStatus = false;
             $scope.value = problem.Severity;
-        }
+        };
         //hide popup message for user
         $scope.hideSeverityLabel = function(){
             $scope.severityMessage = "";
@@ -277,6 +274,7 @@ define(['./module'], function(controllers){
 
         //addproblemtoDB
         $scope.addProblemToDB = function(){
+            console.log(UserService.getSaveChangeStatus());
             if(UserService.getSaveChangeStatus()){
                 $scope.notApproved = adminToShowProblemService.deleteNotApprovedProblemFromList(problem);
                 adminToShowProblemService.approveNotApprovedProblem(problem).then(function(){
@@ -288,7 +286,7 @@ define(['./module'], function(controllers){
                     }
                 })
             }
-        }
+        };
 
         //delete problem from DB
         $scope.deleteProblemFromDb = function(){

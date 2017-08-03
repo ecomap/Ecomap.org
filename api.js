@@ -7,7 +7,6 @@ var mysql = require('mysql'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     myConnection = require('express-myconnection'),
-    bodyParser = require('body-parser'),
     http = require('http'),
     app = express(),
     server = http.createServer(app),
@@ -28,8 +27,8 @@ app.set('view engine', 'ejs');
 var connectionPool = {
     host     : 'localhost',
     user     : 'root',
-    password : 'root',
-    database : 'enviromap'
+    password : '1',
+    database : 'Enviromap'
 };
 
  var router = express.Router();
@@ -147,7 +146,7 @@ var addComment = function(req,res) {
                     userSurname:req.body.data.userSurname
 
                 };
-                if(req.body.data.userId==undefined) {
+                if(req.body.data.userId===undefined) {
                     content.userName="(Анонім)";
                     req.body.userId = 2;
                 }
@@ -196,6 +195,7 @@ var addComment = function(req,res) {
 //////////////////
 //user
 app.get('/api/problems', routes.getProblems);
+app.get('/api/newProblems', routes.getNewProblems);
 app.get('/api/push/', routes.push);
 app.get('/api/problems/:id', routes.getProblemId);
 app.get('/api/users/:idUser', routes.getUserById);
@@ -205,6 +205,7 @@ app.post('/api/problempost', routes.postProblem);
 app.post('/api/vote', routes.postVote);
 app.get('/api/getTitles',routes.getTitles);
 app.get('/api/resources/:name',routes.getResource);
+
 //new api for adding new photos to existed problem
 app.post('/api/registerToken', routes.registerToken);
 app.post('/api/photo/:id',routes.addNewPhotos);
@@ -214,9 +215,11 @@ app.get('/api/logout', routes.logOut);
 app.post('/api/register', routes.register);
 app.post('/api/changePassword', routes.changePassword);
 //app.post('/api/resetPassword', routes.resetPassword);
+
 //admin
 app.get('/api/not_approved', routes.notApprovedProblems);
 app.delete('/api/problem/:id', routes.deleteProblem);
+app.get('/api/users', routes.getUsers);
 app.delete('/api/user/:id', routes.deleteUser);
 app.delete('/api/activity/:id', routes.deleteComment);
 app.delete('/api/photo/:link', routes.deletePhoto);
@@ -225,6 +228,7 @@ app.post('/api/addResource', routes.addResource);
 app.put('/api/editResource/:id', routes.editResource);
 app.delete('/api/deleteResource/:id', routes.deleteResource);
 app.post('/api/approve/:id', routes.approveProblem);
+
 //admin - newsline Api
 app.post('/api/postNews',routes.postNews);
 app.get('/api/getNews',routes.getNews);

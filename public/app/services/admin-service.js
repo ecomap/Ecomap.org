@@ -2,7 +2,7 @@ define(['./module'],function(services) {
     'use strict';
 
 
-    services.factory('adminToShowProblemService', function($http, $modal, $rootScope) {
+    services.factory('AdminService', function($http, $uibModal, $rootScope) {
         var notApproved = undefined;
         var notApprovedProblemListQty = 0;
         var adminMode = false;
@@ -22,9 +22,12 @@ define(['./module'],function(services) {
         };
         var currentEditStatus = '';
         return {
+            getUsers: function () {
+              return $http({method: 'GET', url: '/api/users'});
+            },
             getNotApprovedProblem:function(getNotApproved){
                 $http({ method: 'GET', url: '/api/not_approved' })
-                    .success (function (data) {
+                    .then(function onSuccess (data) {
                         notApproved = data;
                         adminMode = true;
                         notApprovedProblemListQty = notApproved?notApproved.length:0;
@@ -34,13 +37,13 @@ define(['./module'],function(services) {
 
             deleteNotApprovedProblemDB:function(problem){
                 return $http({ method: 'DELETE', url: '/api/problem/'+problem.Id })
-                    .success (function (data) {
+                    .then(function onSuccess (data) {
                     });
             },
 
             deleteNotApprovedProblemFromList:function(problem){
                     for (var i = 0; i < notApproved.length; i++) {
-                        if (problem.Id == notApproved[i].Id) {
+                        if (problem.Id === notApproved[i].Id) {
                             notApproved.splice(i, 1);
                             notApprovedProblemListQty = notApproved.length;
                             return notApproved;
@@ -62,7 +65,7 @@ define(['./module'],function(services) {
             },
 
             getNotApprovedProblemListQty: function (){
-                if (notApprovedProblemListQty != 0) {
+                if(notApprovedProblemListQty !== 0) {
                     return true;
                 }else {
                     return false;
@@ -100,7 +103,7 @@ define(['./module'],function(services) {
                     modalInstance.dismiss('cancel');
                 };
 
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     template: '<div class="modal-header">' +
                         '<h3 class="modal-title">Увага</h3>' +
                         '</div>' +
@@ -126,7 +129,7 @@ define(['./module'],function(services) {
 
                 $rootScope.alerts = [{ type: 'success', msg: 'Ви не зареєстрований користувач, тому проблема спочатку пройде модерацію і потім буде додана на карту.' }];
 
-                modalInstance = $modal.open({
+                modalInstance = $uibModal.open({
                     template: '<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>',
                     size: size,
                     scope: modalWindowScope

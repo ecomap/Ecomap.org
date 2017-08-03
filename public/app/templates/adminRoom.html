@@ -1,0 +1,66 @@
+<close-button></close-button>
+<div class="admin-room">
+    <!--justified="true"-->
+    <uib-tabset  justified="true" active="0">
+        <uib-tab index="0">
+            <uib-tab-heading ng-click="getWindowDimensions()"><i class="{{tab.icon}}"></i> Нові проблеми
+            </uib-tab-heading>
+            <div class="container-fluid">
+                <!--<h2 class="section-heading">З {{lastVisit}} додано {{newProblems.length}} проблем:</h2>-->
+                <div class="row">
+                    <div class="col col-md-6">
+                        <!--<h2 class="section-heading">Фільтри</h2>-->
+                        <div class="text-left flex center" problem-filters-simple></div>
+                    </div>
+                    <div class="col col-md-6">
+                        <div class="new-problem-list">
+                            <a class="new-problem-item text-left flex" ng-repeat="problem in problemsToShow"
+                               ng-href="/#/problem/showProblem/{{problem.Id}}">
+                                <img ng-src="photos/large/{{problem.photos[0].Link}}" class="b-details-body-problem-photo"/>
+
+                                <div class="problem-description">
+                                    <h3>{{problem.Title}}</h3>
+                                    <p class="about ">{{problem.Content}}</p>
+                                </div>
+                                <!--<div style="float: right">jj</div>-->
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1">
+            <uib-tab-heading ng-click="getWindowDimensions()"><i class="{{tab.icon}}"></i> Користувачі
+            </uib-tab-heading>
+            <div class="container-fluid">
+                <!--<h2 class="section-heading">Користувачі</h2>-->
+                <div class="text-left" class="row">
+                    <div class="col col-md-6">
+                        <!--<h2 class="section-heading">Фільтри</h2>-->
+                        <div class="text-left flex center" user-filters-simple></div>
+                    </div>
+                    <div class="col col-md-6">
+                        <span class="search-icon-container"> <i class="fa fa-search"></i></span>
+
+                        <input type="text" class="form-control search" placeholder="Знайти..."  ng-model="searchName">
+                        <div class="user-list">
+                            <div class="user-item" ng-repeat="user in usersToShow">
+                                <div class="main-info">
+                                <h3>{{user.Name}}&nbsp;{{user.Surname}}</h3>
+                                <p>{{user.Email}}</p>
+                                </div>
+                                <div class="role-info">{{getUserRole(user.UserRoles_Id)}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </uib-tab>
+    </uib-tabset>
+
+
+</div>
+

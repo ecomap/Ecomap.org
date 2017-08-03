@@ -2,7 +2,7 @@ define(['./module'], function (controllers) {
 
     'use strict';
 
-    controllers.controller('AdminUserCtrl', ['$scope', '$rootScope', 'ProblemService', '$location', '$window', 'ipCookie', 'UserService', '$modal', '$log', function ($scope,$rootScope, ProblemService, $location, $window, ipCookie, UserService, $modal, $log) {
+    controllers.controller('AdminUserCtrl', ['$scope', '$rootScope', 'ProblemService', '$location', '$window', 'ipCookie', 'UserService', '$uibModal', '$log', function ($scope,$rootScope, ProblemService, $location, $window, ipCookie, UserService, $uibModal, $log) {
 
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.isAdministrator = UserService.isAdministrator;
@@ -14,16 +14,15 @@ define(['./module'], function (controllers) {
         /**--- Getting reg usr problems ---*/
         $scope.getUserProblems = function(userId) {
             ProblemService.getUserProblemsFromDb(userId)
-                .success(function (data) {
-                    $scope.dataUserProblems = data;
+                .then(function onSuccess(response) {
+                    $scope.dataUserProblems = response.data;
 
-            })
-                .error(function (data, status, headers, config) {
+            },function onError (data, status, headers, config) {
                     throw error;
                 });
 
 
-        }
+        };
 
         if($scope.userId) {
             $scope.getUserProblems($scope.userId);
@@ -36,11 +35,11 @@ define(['./module'], function (controllers) {
             data.email = document.login.email.value;
             data.password = document.login.password.value;
 
-            UserService.logIn(data.email, data.password).success(function (userData) {
-                $scope.successLogIn(userData);
+            UserService.logIn(data.email, data.password).then(function onSuccess(response) {
+                successLogIn(response.data);
                 $scope.getUserProblems($scope.userId);
                 $window.location.href="/";
-            }).error(function (status, data) {
+            },function onError (status, data) {
                 console.log(status);
                 console.log(data);
             });
@@ -66,19 +65,21 @@ define(['./module'], function (controllers) {
             if (response.status === 'connected') {
                 FB.api('/me', function(response) {
 
-                    UserService.logIn(response.email, response.id).success(function(userData) {
+                    UserService.logIn(response.email, response.id)
+                        .then(function onSuccess(response) {
 
-                        $scope.successLogIn(userData);
+                        successLogIn(response.data);
 
-                    }).error(function(status, data) {
+                    },function onError(status, data) {
                         console.log(status);
                         console.log(data);
 
-                        UserService.register(response.first_name, response.last_name, response.email, response.id).success(function(userData) {
+                        UserService.register(response.first_name, response.last_name, response.email, response.id)
+                            .then(function onSuccess(response) {
 
-                            $scope.successLogIn(userData);
+                            successLogIn(response.data);
 
-                        }).error(function(status, data) {
+                        },function onError(status, data) {
                             console.log(status);
                             console.log(data);
                         });
@@ -99,8 +100,8 @@ define(['./module'], function (controllers) {
         /**********************************************************/
 
         // This function is called after success login procedure
-        $rootScope.successLogIn = function(userData) {
-
+        // $rootScope.successLogIn = function(userData) {
+        function successLogIn(userData) {
             ipCookie('userName', userData.name, {expires: 10});
             ipCookie('userSurname', userData.surname, {expires: 10});
             ipCookie('userRole', userData.role, {expires: 10});
@@ -120,17 +121,13 @@ define(['./module'], function (controllers) {
             ipCookie.remove('userRole');
             ipCookie.remove('id');
             ipCookie.remove('userEmail');
-
         }
 
         $scope.showFiltersVar = false;
         
         $scope.showFilters = function() {
-            if($scope.showFiltersVar === true)
-                $scope.showFiltersVar = false;
-            else
-                $scope.showFiltersVar = true;
-        }
+            $scope.showFiltersVar = !$scope.showFiltersVar;
+        };
 
         $scope.logInFB = function logInFB() {
             FB.login(function(response) {
@@ -142,31 +139,33 @@ define(['./module'], function (controllers) {
                 }, {
                     scope: 'publish_stream,email'
                 });
-        }
+        };
 
         $scope.logIn = function logIn(email, password) {
 
             //here must be validation!
 
-            UserService.logIn(email, password).success(function(userData) {
-                $scope.successLogIn(userData);
-            }).error(function(status, data) {
+            UserService.logIn(email, password)
+                .then(function onSuccess(response) {
+                successLogIn(response.data);
+            },function onError(status, data) {
                 console.log(status);
                 console.log(data);
             });
-        }
+        };
 
         $scope.register = function register(username, surname, email, password, cnfPassword) {
 
             //and here must be validation!
 
-            UserService.register(username, surname, email, password).success(function(userData) {
-                $scope.successLogIn(userData);
-            }).error(function(status, data) {
+            UserService.register(username, surname, email, password)
+                .then(function onSuccess(response) {
+                successLogIn(response.data);
+            },function onError(status, data) {
                 console.log(status);
                 console.log(data);
             });
-        }
+        };
 
         $scope.logOut = function logOut() {
             successLogOut();
@@ -176,11 +175,11 @@ define(['./module'], function (controllers) {
                 console.log(response);
             });
             
-        }
+        };
 
         $scope.changePassword = function() {
             console.log('change password called');
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/changePassword.html',
                 controller: 'changePasswordCtrl',
                 size: 'sm',
@@ -196,11 +195,11 @@ define(['./module'], function (controllers) {
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-        }
+        };
 
         $scope.resetPassword = function() {
             console.log('reset password called');
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/resetPassword.html',
                 controller: 'resetPasswordCtrl',
                 size: 'sm',
@@ -216,6 +215,7 @@ define(['./module'], function (controllers) {
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-        }
+        };
+
     }]);
 });

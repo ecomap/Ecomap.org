@@ -74,6 +74,26 @@ CREATE TABLE IF NOT EXISTS `Users` (
 ENGINE = InnoDB;
 
 
+- -----------------------------------------------------
+-- Table `Enviromap`.`UserRoles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ModeratorToProblemTypes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `problem_type_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_ModeratorToProblemTypes_Users`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Enviromap`.`Users` (`Id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+ CONSTRAINT `fk_ModeratorToProblemTypes_ProblemTypes`
+    FOREIGN KEY (`problem_type_id`)
+    REFERENCES `Enviromap`.`ProblemTypes` (`Id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 -- -----------------------------------------------------
 -- Table `Enviromap`.`Photos`
 -- -----------------------------------------------------

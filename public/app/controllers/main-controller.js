@@ -1,7 +1,7 @@
 define(['./module'],function(controllers){
     'use strict';
 
-    controllers.controller('mainCtrl',['$scope','$rootScope','$modal', '$log','UserService', '$location','ResourceService', 'adminToShowProblemService' ,function($scope,$rootScope,$modal, $log,UserService,$location,ResourceService, adminToShowProblemService){
+    controllers.controller('mainCtrl',['$scope','$rootScope','$uibModal', '$log','UserService', '$location','ResourceService', 'AdminService' ,function($scope, $rootScope, $uibModal, $log, UserService, $location, ResourceService, adminToShowProblemService){
          $scope.showSlider=false;
         $scope.uploadRightSide = false;
 
@@ -12,11 +12,11 @@ define(['./module'],function(controllers){
                 $scope.swipeHide();
             }
 
-        }
+        };
         
         $rootScope.$broadcast('Update',"");
         $scope.swipeHide = function(params){
-            if(params=="dropzone"){
+            if(params==="dropzone"){
                         $rootScope.$broadcast('Update',"");
             
             }else{
@@ -35,8 +35,11 @@ define(['./module'],function(controllers){
        // $scope.showRigthSide = "_hide";
         $rootScope.getTitles = function() {
             ResourceService.getTitlesFromDb()
-            .success(function (data) {
-                $rootScope.data = data;
+            .then(function onSuccess(res) {
+                $rootScope.data = res.data;
+                console.log(res.data);
+            }, function onError(err) {
+                console.log(err.err)
             });
                     $scope.deleteResource = function(Id,Title){
         //modal window
@@ -46,7 +49,7 @@ define(['./module'],function(controllers){
                 adminToShowProblemService.showModalMessage(text, 'sm',approveCaption, cancelCaption).then(
                     function () {
                     ResourceService.deleteResource(Id)
-                           .success(function() {
+                           .then(function onSuccess() {
                     $rootScope.getTitles();
                     });
                     },
@@ -62,7 +65,7 @@ define(['./module'],function(controllers){
             $scope.messageLog=$rootScope.messageLog;
 
 
-            if ($scope.showRigthSide != message&&message!=undefined){
+            if ($scope.showRigthSide !== message&&message!==undefined){
                 $scope.showRigthSide = message;
             }
         });
@@ -72,7 +75,7 @@ define(['./module'],function(controllers){
 
         $scope.open = function (size) {
 
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/templates/register.html',
                 controller: 'registerCtrl',
                 size: 'sm',
@@ -93,16 +96,16 @@ define(['./module'],function(controllers){
 
         $scope.$location = function () {
             return $location.path();
-        }
+        };
 
         $scope.$watch($scope.$location, function (newValue, oldValue){
-            if (newValue != "/problem/addProblem") {
+            if (newValue !== "/problem/addProblem") {
                 $rootScope.style = function () {
                     return { 
                         'height': 'calc(100%-52px);'
                     };
                 };
-            };
+            }
         });
 
     }]);

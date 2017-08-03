@@ -198,6 +198,69 @@ exports.getProblems = function(req,res){ // get all moderated problems in brief 
     });
 };
 
+exports.getNewProblems = function(req,res){ // get all new problems in brief (id, title, coordinates, type)
+    console.log("start to get information about new problems");
+    var photoArray = [];
+    var newProblems;
+    req.getConnection(function(err, connection) {
+        if (err) {
+            res.statusCode = 500;
+            res.send({
+                err: err.code
+            });
+            console.log('Can`t connect to db in getNewProblems API call\n' + err +"\n");
+        } else {
+            try{
+                connection.query('SELECT Problems.Id, Problems.Title, Problems.Content,  Problems.ProblemTypes_Id, Problems.Status, Activities.Date FROM Problems LEFT JOIN Activities ON Problems.Id=Activities.Problems_Id WHERE Moderation IS NULL AND ActivityTypes_Id=1', function(err, rows1) {
+                    if (err) {
+                        res.statusCode = 500;
+                        res.send({
+                            err: err.code
+                        });
+                        console.error('Can`t make request to Problems db\n', err);
+                    } else {
+                        //res.send(rows1);
+                        //console.log("end to get information about new problems \n");
+
+                        rows1.forEach(function (problem, index) {
+
+                            connection.query('SELECT * FROM Photos WHERE Problems_Id=?', [problem.Id], function (err2, rows2){
+                               if(err2){
+                                   console.error('Can`t make query\n', err2);
+                                   res.statusCode = 500;
+                                   res.send({
+                                    err2: err2.code
+                                   });
+                               } else if(rows2.length === 0) {
+                                   // console.log("there is no photos referring to problem with id:" + problem.Id);
+                                   // copy  = Object.assign(problem);
+                                   // copy.photos = [{Link: null}];
+                                   photoArray[index] = {Link: null};
+                                   // console.log("1: "+copy);
+                               } else{
+                                   // copy  = Object.assign(problem);
+                                   // copy.photos = rows2;
+                                   photoArray[index] = rows2;
+                               }
+                               if(index === rows1.length -1){
+                                   newProblems = rows1.map(function (problem, index) {
+                                       problem.photos = photoArray[index];
+                                       return problem;
+                                   });
+                                   res.send(newProblems);
+                               }
+                            });
+                        });
+                    }
+                });
+            }
+            catch(err){
+                console.log("Can`t make query for getNewProblems \n");
+            }
+        }
+    });
+};
+
 exports.getProblemId = function(req,res){ //get detailed problem description (everything)
     console.log("start to get information about problem  with id:" + req.params.id);
     req.getConnection(function(err, connection) {
@@ -279,8 +342,11 @@ exports.getTitles = function(req,res){ //get titles of resources
                         });
                         console.error('Can`t make query\n', err);
                     }else{
-                        if (rows.length == 0) {
+                        if (rows.length === 0) {
                             res.statusCode = 404;
+                            res.send({
+                                err:""
+                            });
                             console.log("Title, Alias, Id, IsResource are empty");
                         }else{
                             res.statusCode = 200;
@@ -329,6 +395,39 @@ exports.getResource = function(req,res){ //get resourse
             catch(err){
                 console.log('Can`t send information to client getResource API' + err + '\n');
             }
+        }
+    });
+};
+
+exports.getUsers = function(req,res) { //get all user information(name and etc)
+    console.log("start getUsers API function");
+    req.getConnection(function(err, connection) {
+        if (err) {
+            res.statusCode = 503;
+            res.send({
+                err:    err.code
+            });
+            console.log('Can`t connect to db in getUsers API call\n' + err +"\n");
+        } else {
+            connection.query('SELECT Id, Name, Surname, Email, UserRoles_Id FROM Users', function(err, rows) {
+                if (err) {
+                    res.statusCode = 500;
+                    res.send({
+                        err:    err.code
+                    });
+                    console.error('Can`t make query for Users.Id = '+ idUser +'\n' + err +"\n");
+                }
+                if(rows.length === 0) {
+                    console.log("there is no Users info" + '\n');
+                }
+                try{
+                    res.send(rows);
+                    console.log("end getUsers API function");
+                }
+                catch(err){
+                    console.log('Can`t send information to client in getUsers API' + err + '\n');
+                }
+            });
         }
     });
 };
@@ -558,13 +657,13 @@ exports.postProblem = function(req,res){  //post new problem
                     Proposal: req.body.proposal,
                     Latitude: req.body.latitude,
                     Longtitude: req.body.longitude,
-                    Moderation:'1',
+                    Moderation:null,
                     Status: 0,
                     ProblemTypes_Id: req.body.type,
                     Votes:0
                 };
-                if(req.body.userId==undefined){
-                    data.Moderation ='0';
+                if(req.body.userId===undefined){
+                    data.Moderation = null;
                 }
                 else {
                     var idUser = req.body.userId;
@@ -1006,7 +1105,7 @@ exports.postVote = function(req,res){  //+1 vote for a problem
 };
 exports.logIn = function(req, res) {
     console.log("start getUserActivity API function");
-    //console.log("email is - " + req.body.email + ", pass is - " +req.body.password);
+    // console.log("email is - " + req.body.email + ", pass is - " +req.body.password);
     req.getConnection(function(err, connection) {
         if (err) {
             res.statusCode = 503;
@@ -1184,10 +1283,10 @@ exports.notApprovedProblems = function(req, res) {
                     if(err) {
                         return res.send(401);
                     }
-                    if (decoded.role != 'administrator') {
+                    if (decoded.role !== 'administrator') {
                         return res.send(401);
                     }
-                    connection.query('SELECT Problems.Id, Problems.Title, Problems.Latitude, Problems.Longtitude, Activities.Date FROM Problems JOIN Activities ON Problems.Id = Activities.Problems_Id WHERE Moderation =0;', function(err, rows, fields) {
+                    connection.query('SELECT Problems.Id, Problems.Title, Problems.Latitude, Problems.Longtitude, Activities.Date FROM Problems JOIN Activities ON Problems.Id = Activities.Problems_Id WHERE Moderation IS NULL;', function(err, rows, fields) {
                         if (err) {
                             res.statusCode = 500;
                             res.send({
@@ -1278,7 +1377,7 @@ exports.approveProblem = function(req, res) {
                     if(err) {
                         return res.send(401);
                     }
-                    if (decoded.role != 'administrator') {
+                    if (decoded.role !== 'administrator') {
                         return res.send(401);
                     }
                     var id=req.params.id;

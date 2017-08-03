@@ -42,11 +42,10 @@ define(['./module'], function (controllers) {
 
         $rootScope.getProblemsAndPlaceMarkers = function(){
             ProblemService.getAllProblemsFromDb()
-                .success(function (data) {
-                    $scope.data = data;
+                .then(function onSuccess (response) {
+                    $scope.data = response.data;
                     placeMarkers($scope.data);
-                })
-                .error(function (data, status, headers, config) {
+                },function onError(data, status, headers, config) {
                     throw error;
                 });
         };
@@ -149,6 +148,7 @@ define(['./module'], function (controllers) {
 
         $scope.placeUserProblemsChecker;
         $scope.toggleSelection = function () {
+            console.log("placeUserProblemsChecker: " + $scope.placeUserProblemsChecker);
             if($scope.placeUserProblemsChecker)
                 placeMarkers($scope.dataUserProblems);
             else

@@ -6,17 +6,17 @@
             </div>
             <div class="datepicker input-group">
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event,'dt')"><i class="fa fa-calendar"></i> Показати з: </button>
+                <button type="button" class="btn btn-default" ng-click="toggleDt($event,'dt')"><i class="fa fa-calendar"></i> Показати з: </button>
             </span>
-                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="todayTime.formDataDt" is-open="datepickers.dt" min-date="minDate" max-date="todayTime.formDataDtSecond" datepicker-options="dateOptions" ng-required="true" close-text="{{texts.close}}" current-text="{{texts.today}}" clear-text="{{texts.clear}}" ng-change="toggleSelection()"/>
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="todayTime.formDataDt" is-open="datepickers.dt" min-date="minDate" max-date="todayTime.formDataDtSecond" datepicker-options="dateOptions" clear-text="{{text.clear}}" close-text="{{text.close}}" current-text="{{text.today}}" ng-required="true"  popup-placement="bottom-right" ng-change="toggleSelection()"/>
 
             </div>
 
             <div class="datepicker input-group">
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event, 'dtSecond')"><i class="fa fa-calendar"></i> Показати до: </button>
+                <button type="button" class="btn btn-default" ng-click="toggleDt($event, 'dtSecond')"><i class="fa fa-calendar"></i> Показати до: </button>
             </span>
-                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="todayTime.formDataDtSecond" is-open="datepickers.dtSecond" min-date="todayTime.formDataDt" max-date="formDataToday" datepicker-options="dateOptions" ng-required="true" close-text="{{texts.close}}" current-text="{{texts.today}}" clear-text="{{texts.clear}}" ng-change="toggleSelection()"/>
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="todayTime.formDataDtSecond" is-open="datepickers.dtSecond" min-date="todayTime.formDataDt" max-date="formDataToday" datepicker-options="dateOptions" clear-text="{{text.clear}}" close-text="{{text.close}}" current-text="{{text.today}}" ng-required="true"   popup-placement="bottom-right" ng-change="toggleSelection()"/>
 
             </div>
 

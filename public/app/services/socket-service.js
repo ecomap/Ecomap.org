@@ -14,20 +14,18 @@ define(['./module'],function(services){
           socket:socket,
           addNewsToDb:function(message){
               return $http.post('/api/postNews', {news: message})
-              .success(function (data, status, headers, config) {
-              })
-              .error(function (data, status, headers, config) {
+              .then(function onSuccess (data, status, headers, config) {
+              },function onError (data, status, headers, config) {
                   throw error;
               });
 
           },
           getNewsFromDb:function(uploadScope){
               return $http.get('/api/getNews',{})
-              .success(function(data,status,headers,config){
-                  uploadScope(data);
+              .then(function onSuccess(response){
+                  uploadScope(response.data);
 
-              })
-              .error(function(data,status,headers,config){
+              },function onError (data,status,headers,config){
                   throw error;
               });
 
@@ -35,9 +33,8 @@ define(['./module'],function(services){
 
           deleteOneNewsItem:function(newsContent){
               return $http.post('/api/clearOneNews', {content:newsContent})
-              .success(function (data, status, headers, config) {
-              })
-              .error(function (data, status, headers, config) {
+              .then(function onSuccess (data, status, headers, config) {
+              },function onError (data, status, headers, config) {
                   throw error;
               });
 

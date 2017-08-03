@@ -3,7 +3,7 @@ define(['./module'], function (controllers) {
     controllers.controller('editorCtrl',['$scope', '$rootScope', '$routeParams', '$location','ResourceService', function ($scope, $rootScope, $routeParams, $location,ResourceService) {
         if ($routeParams.Alias) {
             ResourceService.getResourceFromDb($routeParams.Alias)
-                .success(function(data) {
+                .then(function onSuccess(data) {
                     $scope.resource = data[0];
                     $scope.Alias = $scope.resource.Alias;
                     $scope.Content = $scope.resource.Content;
@@ -20,10 +20,10 @@ define(['./module'], function (controllers) {
         $scope.sendResource = function(Alias, Content, Title, IsResource, Id) {
                 if (Id){
             ResourceService.editResourceAndSaveToDb(Id,{Alias: Alias, Content: Content, Title: Title, IsResource : IsResource})
-                .success(function() {
+                .then(function onSuccess() {
                     $rootScope.getTitles();
                     $location.path('resources/' + Alias);
-              }).error(function(data, status) {
+              },function onError(data, status) {
                 switch (data.err) {
                     case "ER_BAD_NULL_ERROR":
                     $scope.errorMsq = "Заповніть всі поля!";
@@ -41,10 +41,10 @@ define(['./module'], function (controllers) {
        }
        else {
                     ResourceService.addResourceToDb({ Alias: Alias, Content: Content, Title: Title, IsResource: IsResource})
-                      .success(function() {
+                      .then(function onSuccess() {
                             $rootScope.getTitles();
                             $location.path('resources/' + Alias);
-                    }).error(function(data, status) {
+                    },function onError(data, status) {
                 switch (data.err) {
                     case "ER_BAD_NULL_ERROR":
                     $scope.errorMsq = "Заповніть всі поля!";

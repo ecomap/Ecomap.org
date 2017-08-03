@@ -14,8 +14,10 @@ require.config({
         'require': '../bower_components/requirejs/require',
         'facebook': './js/facebook',
         'dropzone':'../bower_components/dropzone/downloads/dropzone',
+        // 'dropzone':'../bower_components/dropzone/dist/dropzone',
     /* 'btford.socket-io': '../bower_components/btford.socket-io',*/
-        'textAngular':'../bower_components/textAngular/src/textAngular',
+        // 'textAngular':'../bower_components/textAngular/src/textAngular',
+        'textAngular':'../bower_components/textAngular/dist/textAngular',
         'ngSanitize':'../bower_components/textAngular/src/textAngular-sanitize',
         'textAngularSetup':'../bower_components/textAngular/src/textAngularSetup',
         'ngResource':  '../bower_components/angular-resource/angular-resource',
@@ -26,7 +28,8 @@ require.config({
         'ngAnimate':'../bower_components/angular-animate/angular-animate',
         'd3': '../bower_components/d3/d3',
         'angular-carousel':'../bower_components/angular-carousel/dist/angular-carousel',
-        'ngLocale':'./js/angular-locale_uk-ua',
+        // 'ngLocale':'./js/angular-locale_uk-ua',
+        'ngLocale':'../bower_components/angular-i18n/angular-locale_uk-ua',
         'app.templates':'./templates/maintemplate'
 
 
@@ -48,6 +51,9 @@ require.config({
             exports: 'io',
             deps: ['angular']
         },
+        'socket': {
+            deps: ['socket.io']
+        },
         'angular-route': {
             deps: ['angular']
         },
@@ -62,9 +68,6 @@ require.config({
         },
         'ngAnimate':{
             deps: ['angular']
-        },
-         'socket': {
-            deps: ['socket.io']
         },
 
         'angular-mocks': {
@@ -98,4 +101,5 @@ require.config({
         // kick start application... see bootstrap.js
         './bootstrap'
     ]
+
 });

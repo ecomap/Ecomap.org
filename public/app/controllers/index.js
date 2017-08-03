@@ -1,5 +1,6 @@
 define([
     './admin-user',
+    './admin-room-controller',
     './map-load',
     './main-controller',
     './show-problem',

@@ -1,0 +1,11 @@
+<div class="b-container-filters-left">
+    <div class="info-problem-filters">
+        <div class="problem">
+            <p class="title">ТИП ПРОБЛЕМ</p>
+            <input ng-repeat-start="problemType in problemTypes" id="{{'type0' + problemType.id}}" type="checkbox"  ng-model="problemType.selected" ng-change="updateProblemsList()">
+            <label ng-repeat-end for="{{'type0' + problemType.id}}">{{problemType.name}}</label>
+        </div>
+    </div>
+</div>
+
+

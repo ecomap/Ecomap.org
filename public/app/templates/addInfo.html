@@ -29,5 +29,5 @@
 		<textarea class="form-control" id="proposal-field" rows="6" ng-model="problemData.proposal" ng-trim="false" maxlength="1000" ng-required="true"></textarea>
 		<span class="help-block">(залишилось {{1000 - problemData.proposal.length}} символів)</span>
 	</div>
-	<button class="btn btn-default btn-sm" ng-click="tabs[2].active = true">Далі</button>
+	<button class="btn btn-default btn-sm" ng-click="tabs.active = 2">Далі</button>
 </form>

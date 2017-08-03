@@ -21,10 +21,12 @@
             <div class="b-problem-deatiled-info-container">
                 <div class='b-problem-deatiled-info-severity'>
                     <div  ng-class="{'b-hide-stars':!isAdministrator()}" ng-mouseover=showMessageOverRating(problem.Severity) ng-mouseleave="hideSeverityLabel()"> </div>
-                    <div class="b-problem-deatiled-info__severity b-problem-notAdmin_{{!isAdministrator()}}" ng-init="problem.Severity"><rating ng-model="problem.Severity" on-hover="showMessageOverRating(value)" on-leave="showStatus = false" readonly="isReadonly" state-on="'fa-star'" state-off="'fa-star-o'" ></rating>
+                    <!--<div class="b-problem-deatiled-info__severity b-problem-notAdmin_{{!isAdministrator()}}" ng-init="problem.Severity"><rating ng-model="problem.Severity" on-hover="showMessageOverRating(value)" on-leave="showStatus = false" readonly="isReadonly" state-on="'fa-star'" state-off="'fa-star-o'" ></rating>-->
+                    <div class="b-problem-deatiled-info__severity b-problem-notAdmin_{{!isAdministrator()}}" ng-init="problem.Severity"><span uib-rating ng-model="problem.Severity" on-hover="showMessageOverRating(value)" on-leave="showStatus = false" read-only="isReadonly" state-on="'fa fa-star'" state-off="'fa fa-star-o'" ></span>
                     </div>
                 </div>
-                <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                <!--<uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></uib-rating>-->
+                <!--<span uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></span>-->
                 <div class="b-problem-deatiled-info-status__text" >
                     <div class="onoffswitch">
                         <input type="checkbox"   name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="checkedbox"   ng-checked="checkedbox" ng-disabled="!isAdministrator()" >
@@ -98,7 +100,7 @@
             </tab>
         </tabset>
         <div class="b-commandButtons-group">
-            <button type="button" class="btn btn-sm {{editStatusClass}}"  ng-click="saveChangestoDb(problem.Title,problem.Severity, problem.Status, problem.Content,problem.Proposal)" >Збережіть зміни</button>
+            <button type="button" class="btn {{editStatusClass}} btn-sm"  ng-click="saveChangestoDb(problem.Title,problem.Severity, problem.Status, problem.Content,problem.Proposal)" >Збережіть зміни</button>
             <button type="button" class="btn {{addStatus}} btn-sm" ng-click="addProblemToDB()" >Додати проблему до бази</button>
             <button type="button" class="btn {{delStatus}} btn-sm"  ng-click="deleteProblemFromDb()" >Видалити проблему з бази</button>
         </div>

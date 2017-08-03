@@ -32,10 +32,10 @@ resources[4].isResource = 1;
 
 var problemTypes = ['проблеми лісів', 'сміттєзвалища', 'незаконна забудова', 'проблеми водойм', 'загрози біорізноманіттю', 'браконьєрство', 'інші проблеми'],
     userRoles = ['administrator', 'user'],
-    userNames = ['admin', 'name1', 'name2', 'name3', 'name4', 'name5', 'name6', 'name7', 'name8', 'name9'],
-    userEmails = ['admin@.com', 'name1@.com', 'name2@.com', 'name3@.com', 'name4@.com', 'name5@.com', 'name6@.com', 'name7@.com', 'name8@.com', 'name9@.com'],
-    passwords = ['admin', '12345678'],
-    activityTypes = ['addProblem', 'editProblem', 'voteForProblem', 'postPhoto', 'postComment'];
+    userNames = ['admin', 'name1', 'name2', 'name3', 'name4', 'name5', 'name6', 'name7', 'name8', 'name9', 'mnitd'],
+    userEmails = ['admin@.com', 'name1@.com', 'name2@.com', 'name3@.com', 'name4@.com', 'name5@.com', 'name6@.com', 'name7@.com', 'name8@.com', 'name9@.com', 'mnitd@gmail.com'],
+    passwords = ['admin', '12345678', '1'],
+    activityTypes = ['addProblem', 'editProblem', 'voteForProblem', 'postPhoto', 'postComment', 'deleteProblem', 'upprovedProblem'];
 
 var i;
 
@@ -50,7 +50,7 @@ var connection = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'root',
+        password: '1',
         database: 'Enviromap'
     });
 
@@ -92,7 +92,7 @@ function fillUsers() {
         email: userEmails[0],
         userRoles_Id: 1
     });
-    for (i = 1; i < userNames.length; i++) {
+    for (i = 1; i < userNames.length-1; i++) {
         connection.query('INSERT INTO Users SET ?', {
             name: userNames[i],
             password: crypto.createHmac('sha1', secret.secretToken).update(passwords[1]).digest("hex"),
@@ -100,6 +100,13 @@ function fillUsers() {
             userRoles_Id: 2
         });
     }
+    connection.query('INSERT INTO Users SET ?', {
+        name: userNames[userNames.length - 1],
+        password: crypto.createHmac('sha1', secret.secretToken).update(passwords[2]).digest("hex"),
+        email: userEmails[userEmails.length - 1],
+        userRoles_Id: 1
+    });
+
 }
 
 
@@ -145,7 +152,7 @@ function fillProblemsActivities() {
                 Content: content,
                 Proposal: proposal,
                 Severity: probs[i].severity,
-                Moderation: 1,
+                Moderation:  probs[i].moderation,
                 Votes: probs[i].votes,
                 Latitude: probs[i].lat,
                 Longtitude: probs[i].lon,
@@ -172,7 +179,7 @@ function fillProblemsActivities() {
         };
     };
 };
-fillResources()
+fillResources();
 fillProblemTypes();
 fillUserRoles();
 fillUsers();

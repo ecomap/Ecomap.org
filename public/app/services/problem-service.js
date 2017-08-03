@@ -18,6 +18,11 @@ define(['./module'], function (services) {
                 return $http({ method: 'GET', url: '/api/problems' });
 
             },
+            getNewProblemsFromDb: function () {
+                console.log("ProblemService.getNewProblemsFromDb");
+                return $http({ method: 'GET', url: "/api/newProblems" });
+
+            },
             getProblemByIdFromDb:function(problemId) {
                 return $http.get("api/problems/" + problemId);
 

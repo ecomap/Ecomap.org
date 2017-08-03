@@ -1,0 +1,16 @@
+<div class="b-container-filters-left">
+    <div class="info-problem-filters">
+        <div class="problem">
+            <p class="title">РОЛІ КОРИСТУВАЧІВ</p>
+            <input ng-repeat-start="userRole in userRoles" id="{{'role' + userRole.id}}" type="checkbox"  ng-model="userRole.selected" ng-change="updateUsersList()">
+            <label ng-repeat-end for="{{'role' + userRole.id}}">{{userRole.name}}</label>
+        </div>
+        <br>
+        <div class="problem">
+            <input id = "newUsers"  type = "checkbox" ng-model="filters.newUserChecked" ng-change="showNewUsers()">
+            <label for= "newUsers">Нові користувачі</label>
+        </div>
+    </div>
+</div>
+
+

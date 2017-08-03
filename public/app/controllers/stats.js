@@ -3,24 +3,23 @@ define(['./module'],function(controllers){
     controllers.controller('statsCtrl',['$scope','$rootScope','$http','StatisticService', function($scope, $rootScope, $http,StatisticService){
        $rootScope.$broadcast('Update', '_full');
        StatisticService.getStatistic4()
-           .success(function(data) {
-               $scope.mostPopular = data[0];
-               $scope.mostImportant = data[1];
-               $scope.mostComment = data[2];
+           .then(function onSuccess(response) {
+               console.log(response);
+               $scope.mostPopular = response.data[0];
+               $scope.mostImportant = response.data[1];
+               $scope.mostComment = response.data[2];
 
-       })
-           .error(function (data, status, headers, config) {
+       },function onError (data, status, headers, config) {
                throw error;
            });
 
        StatisticService.getStatistic3()
-           .success(function(data) {
-               $scope.votes = data[0][0].votes;
-               $scope.problems = data[0][0].problems;
-               $scope.comments = data[2][0].comments;
-               $scope.photos = data[1][0].photos;
-       })
-           .error(function (data, status, headers, config) {
+           .then(function onSuccess(response) {
+               $scope.votes = response.data[0][0].votes;
+               $scope.problems = response.data[0][0].problems;
+               $scope.comments = response.data[2][0].comments;
+               $scope.photos = response.data[1][0].photos;
+       },function onError (data, status, headers, config) {
                throw error;
            });
 
@@ -34,7 +33,7 @@ define(['./module'],function(controllers){
 
   $scope.pie = function(val){
     for (var styles in $scope.style) {
-      if ($scope.style[styles] == 'currentPeriod') $scope.style[styles] = undefined;
+      if ($scope.style[styles] === 'currentPeriod') $scope.style[styles] = undefined;
         }
         $scope.style[val] = 'currentPeriod';
       StatisticService.getPie(val);

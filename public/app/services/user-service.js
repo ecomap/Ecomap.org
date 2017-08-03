@@ -1,4 +1,4 @@
-define(['./module'], function (services) {
+    define(['./module'], function (services) {
     'use strict';
 
         
@@ -28,7 +28,7 @@ define(['./module'], function (services) {
             },
 
             isAdministrator: function () {
-                if (ipCookie('userRole') == 'administrator') {
+                if (ipCookie('userRole') === 'administrator') {
                     return true;
                 } else {
                     return false;
